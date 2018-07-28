@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Start Page</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <link rel="stylesheet" href="index_style.css">
+        <script src="switchForm.js"></script>
+
+    </head>
+
+    <body>
+        <div class="container">
+
+            <div id="text-welcome">
+                <h1>Online Bank 365</h1>
+                <p>Welcome to your online bank, where managing your accounts, transferring money and monitoring your expenses have never been easier</p>
+            </div>
+
+            <!-- LOG IN FORM -->
+            <div id="log-in-form">
+                <form action="#" method="get" id="form1">
+                  <div class="field">
+                      <label for="email">Email</label>
+                      <br>
+                      <input type="text" name="email" placeholder="Enter your email..">
+                  </div>
+                  <div class="field">
+                      <label for="password">Password</label>
+                      <br>
+                      <input class="password" type="password" name="password" placeholder="Enter your password..">
+                  </div>
+                  <input type="submit" form="form1" value="Log in">
+                </form>
+                <p id="sign-up-link" onclick="displaySignUpForm()">No account? Sign up now</p>
+            </div>
+
+            <!-- SIGN IN FORM -->
+            <div id="sign-up-form">
+                <form action="api/users/new" method="get" id="form2">
+                  <div class="two-col">
+                    <div class="col1">
+                      <div class="field">
+                        <label for="firstname">First Name</label>
+                        <br>
+                        <input type="text" name="firstname" placeholder="Enter your first name..">
+                      </div>
+                    </div>
+                    <div class="col2">
+                      <div class="field">
+                        <label for="lastname">Last Name</label>
+                        <br>
+                        <input type="text" name="lastname" placeholder="Enter your last name..">
+                      </div>
+                    </div>
+                    <div class="col1">
+                      <div class="field">
+                        <label for="address">Address</label>
+                        <br>
+                        <input type="text" name="address" placeholder="Enter your address..">
+                      </div>
+                    </div>
+                    <div class="col2">
+                      <div class="field">
+                        <label for="email">Email</label>
+                        <br>
+                        <input type="text" name="email" placeholder="Enter your email..">
+                      </div>
+                    </div>
+                    <div class="col1">
+                      <div class="field">
+                        <label for="password">Password</label>
+                        <br>
+                        <input class="password" type="password" name="password" placeholder="Enter your password..">
+                      </div>
+                    </div>
+                    <div class="col2">
+                      <div class="field">
+                        <label for="password">Confirm Password</label>
+                        <br>
+                        <input class="password" type="password" name="password2" placeholder="Retype your password..">
+                      </div>
+                    </div>
+                    <input type="submit" form="form2" value="Sign up" >
+                  </div>
+                </form>
+                <p id="log-in-link" onclick="displayLogInForm()">Already a member? Log in here</p>
+            </div>
+
+        </div>
+
+    </body>
+</html>
