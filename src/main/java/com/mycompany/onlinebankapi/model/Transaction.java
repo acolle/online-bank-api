@@ -6,21 +6,35 @@
 package com.mycompany.onlinebankapi.model;
 
 import java.util.Date;
-import javax.xml.bind.annotation.XmlRootElement;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.MappedSuperclass;
+import javax.persistence.OneToOne;
 
 /**
  *
  * @author anthonycolle
  */
-@XmlRootElement
+@MappedSuperclass
 public class Transaction {
-    
-    // Fields - Member Variables
-    private long id;
+	
+	public static final String
+			DEPOSIT = "DEPOSIT",
+			LODGE = "LODGE",
+			WITHDRAW = "WITHDRAW",
+			TRANSFER = "TRANSFER";
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+    private int id;
     private String type;
     private Date dateCreated;
     private String description;
-    private double newBalance;
+    private double amount;
+	@OneToOne
+	private Account account;
+	
     
     // ADD TRANSACTION AMOUNT
 
@@ -28,16 +42,16 @@ public class Transaction {
     public Transaction() {
     }
 
-    public Transaction(long id, String type, String description, double newBalance) {
+    public Transaction(int id, String type, String description, double amount) {
         this.id = id;
         this.type = type;
         this.description = description;
-        this.newBalance = newBalance;
+        this.amount = amount;
         this.dateCreated = new Date();
     }
 
     // Setters - Mutators
-    public void setId(long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -53,12 +67,12 @@ public class Transaction {
         this.description = description;
     }
 
-    public void setNewBalance(double newBalance) {
-        this.newBalance = newBalance;
+    public void setAmount(double amount) {
+        this.amount = amount;
     }
 
     // Getters - Accessors
-    public long getId() {
+    public int getId() {
         return id;
     }
 
@@ -74,8 +88,8 @@ public class Transaction {
         return description;
     }
 
-    public double getNewBalance() {
-        return newBalance;
+    public double getAmount() {
+        return amount;
     }
     
 }

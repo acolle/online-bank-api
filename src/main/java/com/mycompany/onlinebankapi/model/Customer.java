@@ -5,49 +5,58 @@
  */
 package com.mycompany.onlinebankapi.model;
 
+import java.util.ArrayList;
+import java.util.List;
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
  * @author anthonycolle
  */
-
+@Entity
 @XmlRootElement
-public class User {
+public class Customer {
     
     // Fields - Member Variables
-    private long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+    private int id;
     private String firstname;
     private String lastname;
     private String address;
     private String email;
-    private String password;
+	@ElementCollection
+	private List<Account> accounts = new ArrayList<>();
 
     // Constructors
-    public User() {
+    public Customer() {
     }
 
-    public User(long id, String firstname, String lastname, String address, String email, String password) {
+    public Customer(int id, String firstname, String lastname, String address, String email) {
         this.id = id;
         this.firstname = firstname;
         this.lastname = lastname;
         this.address = address;
         this.email = email;
-        this.password = password;
     }
 
     // Setters - Mutators
-    public void setId(long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
-    public void setFirstName(String firstname) {
-        this.firstname = firstname;
-    }
+	public void setFirstname(String firstname) {
+		this.firstname = firstname;
+	}
 
-    public void setLastName(String lastname) {
-        this.lastname = lastname;
-    }
+	public void setLastname(String lastname) {
+		this.lastname = lastname;
+	}
     
     public void setAddress(String address) {
         this.address = address;
@@ -56,13 +65,13 @@ public class User {
     public void setEmail(String email) {
         this.email = email;
     }
-    
-    public void setPassword(String password) {
-        this.password = password;
-    }
+	
+	public void setAccounts(List<Account> accounts) {
+		this.accounts = accounts;
+	}
 
     // Getters - Accessors
-    public long getId() {
+    public int getId() {
         return id;
     }
 
@@ -70,7 +79,7 @@ public class User {
         return firstname;
     }
 
-    public String getLasstname() {
+    public String getLastname() {
         return lastname;
     }
     
@@ -82,8 +91,8 @@ public class User {
         return email;
     }
     
-    public String getPassword() {
-        return password;
-    }
+	public List<Account> getAccounts() {
+		return accounts;
+	}
     
 }

@@ -5,7 +5,7 @@
  */
 package com.mycompany.onlinebankapi.service;
 
-import com.mycompany.onlinebankapi.model.User;
+import com.mycompany.onlinebankapi.model.Customer;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,25 +13,25 @@ import java.util.List;
  *
  * @author anthonycolle
  */
-public class UserService {
+public class CustomerService {
     
     // Use ArrayList temporarily to mock the Database layer
-    public static List<User> list = new ArrayList<User>();
+    public static List<Customer> list = new ArrayList<Customer>();
     
     
     // ADD ADDITIONAL FUNCTIONS
     
     // Add a new user
-    public void addUser(long id, String firstname, String lastname, String address, String email, String password) {
+    public void addUser(int id, String firstname, String lastname, String address, String email) {
 
-        User newUser = new User(id, firstname, lastname, address, email, password);
+        Customer newUser = new Customer(id, firstname, lastname, address, email);
         System.out.println(firstname + " " + lastname + " " + address);
         list.add(newUser);
         System.out.println("New User Added");
     }
 
     // Return a list of all users with the service
-    public List<User> getAllUsers() {
+    public List<Customer> getAllUsers() {
         
 //        User u1 = new User(1L, "Bob", "O'Neil", "32, Thomas Street", "boneil@gmail.com", "123456");
 //        User u2 = new User(2L, "Michael", "Connor", "23, Jersey Street", "mconnor@gmail.com", "654321");
@@ -46,7 +46,7 @@ public class UserService {
     }
 
     // Return a specific user of the service
-    public User getUser(int id) {
+    public Customer getUser(int id) {
         
         return list.get(id - 1);
         

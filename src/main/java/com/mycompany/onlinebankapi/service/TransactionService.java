@@ -22,10 +22,10 @@ public class TransactionService {
     
     // Return a list of all transaction to date
     public List<Transaction> getAllTransactions() {
-        Transaction t1 = new Transaction(1L, "debit", "description1", 2341.50);
-        Transaction t2 = new Transaction(1L, "debit", "description2", 534.20);
-        Transaction t3 = new Transaction(1L, "credit", "description3", 11234.00);
-        Transaction t4 = new Transaction(1L, "debit", "description4", 5432.65);
+        Transaction t1 = new Transaction(1, "debit", "description1", 2341.50);
+        Transaction t2 = new Transaction(2, "debit", "description2", 534.20);
+        Transaction t3 = new Transaction(3, "credit", "description3", 11234.00);
+        Transaction t4 = new Transaction(4, "debit", "description4", 5432.65);
 
         list.add(t1);
         list.add(t2);

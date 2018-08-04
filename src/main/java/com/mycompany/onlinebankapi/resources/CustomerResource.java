@@ -5,8 +5,8 @@
  */
 package com.mycompany.onlinebankapi.resources;
 
-import com.mycompany.onlinebankapi.model.User;
-import com.mycompany.onlinebankapi.service.UserService;
+import com.mycompany.onlinebankapi.model.Customer;
+import com.mycompany.onlinebankapi.service.CustomerService;
 import java.util.List;
 import javax.servlet.ServletException;
 import javax.ws.rs.GET;
@@ -23,16 +23,16 @@ import javax.ws.rs.core.UriInfo;
  * @author anthonycolle
  */
 
-@Path("/users")
-public class UserResource {
+@Path("/user")
+public class CustomerResource {
     
-    UserService userService = new UserService();
+    CustomerService userService = new CustomerService();
     
 //    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 
     @GET
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public List<User> getUsers() {
+    public List<Customer> getUsers() {
         return userService.getAllUsers();
     }
     
@@ -83,7 +83,7 @@ public class UserResource {
                 return Response.status(200).entity(output).build();
                 
             } else {
-                userService.addUser(1L, firstname, lastname, address, email, password);
+                userService.addUser(1, firstname, lastname, address, email);
                 String output = "Welcome " + firstname + "!\nGet started by opening a new account";
                 return Response.status(200).entity(output).build();
             }
@@ -96,7 +96,7 @@ public class UserResource {
     @GET
     @Path("/{userId}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public User getUser(@PathParam("userId") int id) {
+    public Customer getUser(@PathParam("userId") int id) {
         return userService.getUser(id);
     }
     

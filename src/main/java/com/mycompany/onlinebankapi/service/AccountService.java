@@ -21,10 +21,10 @@ public class AccountService {
     // ADD ADDITIONAL FUNCTIONS
     // Return a list of all accounts open
     public List<Account> getAllAccounts() {
-        Account a1 = new Account(1L, "ABC-123", 2341.50);
-        Account a2 = new Account(2L, "DEF-123", 2341.50);
-        Account a3 = new Account(3L, "ABC-456", 2341.50);
-        Account a4 = new Account(4L, "DEF-456", 2341.50);
+        Account a1 = new Account(1, "ABC-123", 2341.50, null);
+        Account a2 = new Account(2, "DEF-123", 2341.50, null);
+        Account a3 = new Account(3, "ABC-456", 2341.50, null);
+        Account a4 = new Account(4, "DEF-456", 2341.50, null);
 
         list.add(a1);
         list.add(a2);
