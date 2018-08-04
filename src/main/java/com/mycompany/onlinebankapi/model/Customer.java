@@ -7,11 +7,11 @@ package com.mycompany.onlinebankapi.model;
 
 import java.util.ArrayList;
 import java.util.List;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -30,69 +30,55 @@ public class Customer {
     private String lastname;
     private String address;
     private String email;
-	@ElementCollection
+	@OneToMany
 	private List<Account> accounts = new ArrayList<>();
 
-    // Constructors
-    public Customer() {
-    }
+	public int getId() {
+		return id;
+	}
 
-    public Customer(int id, String firstname, String lastname, String address, String email) {
-        this.id = id;
-        this.firstname = firstname;
-        this.lastname = lastname;
-        this.address = address;
-        this.email = email;
-    }
+	public void setId(int id) {
+		this.id = id;
+	}
 
-    // Setters - Mutators
-    public void setId(int id) {
-        this.id = id;
-    }
+	public String getFirstname() {
+		return firstname;
+	}
 
 	public void setFirstname(String firstname) {
 		this.firstname = firstname;
 	}
 
+	public String getLastname() {
+		return lastname;
+	}
+
 	public void setLastname(String lastname) {
 		this.lastname = lastname;
 	}
-    
-    public void setAddress(String address) {
-        this.address = address;
-    }
-    
-    public void setEmail(String email) {
-        this.email = email;
-    }
-	
-	public void setAccounts(List<Account> accounts) {
-		this.accounts = accounts;
+
+	public String getAddress() {
+		return address;
 	}
 
-    // Getters - Accessors
-    public int getId() {
-        return id;
-    }
+	public void setAddress(String address) {
+		this.address = address;
+	}
 
-    public String getFirstname() {
-        return firstname;
-    }
+	public String getEmail() {
+		return email;
+	}
 
-    public String getLastname() {
-        return lastname;
-    }
-    
-    public String getAddress() {
-        return address;
-    }
-    
-    public String getEmail() {
-        return email;
-    }
-    
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
 	public List<Account> getAccounts() {
 		return accounts;
 	}
-    
+
+	public void setAccounts(List<Account> accounts) {
+		this.accounts = accounts;
+	}
+	
 }

@@ -5,6 +5,7 @@
  */
 package com.mycompany.onlinebankapi.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.ElementCollection;
@@ -12,7 +13,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToOne;
+import javax.persistence.ManyToOne;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -21,7 +22,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @Entity
 @XmlRootElement
-public class Account {
+public class Account implements Serializable {
     
     // Fields - Member Variables
 	@Id
@@ -30,48 +31,50 @@ public class Account {
 	private String sortCode;
     private String accountNo;
     private double balance;
-	@OneToOne
+	@ManyToOne
 	private Customer customer;
 	@ElementCollection
 	private List<Transaction> transactionHistory = new ArrayList<>();
 
-    
-    // Constructors
-    public Account() {
-    }
+	public int getId() {
+		return id;
+	}
 
-    public Account(int id, String accountNo, double balance, List<Transaction> transactionHistory) {
-        this.id = id;
-        this.accountNo = accountNo;
-        this.balance = balance;
-		this.transactionHistory = transactionHistory;
-    }
+	public void setId(int id) {
+		this.id = id;
+	}
 
-    // Setters - Mutators
-    public void setId(int id) {
-        this.id = id;
-    }
+	public String getSortCode() {
+		return sortCode;
+	}
 
-    public void setAccountNo(String accountNo) {
-        this.accountNo = accountNo;
-    }
+	public void setSortCode(String sortCode) {
+		this.sortCode = sortCode;
+	}
 
-    public void setBalance(double balance) {
-        this.balance = balance;
-    }
+	public String getAccountNo() {
+		return accountNo;
+	}
 
-    // Getters - Accessors
-    public int getId() {
-        return id;
-    }
+	public void setAccountNo(String accountNo) {
+		this.accountNo = accountNo;
+	}
 
-    public String getAccountNo() {
-        return accountNo;
-    }
+	public double getBalance() {
+		return balance;
+	}
 
-    public double getBalance() {
-        return balance;
-    }
+	public void setBalance(double balance) {
+		this.balance = balance;
+	}
+
+	public Customer getCustomer() {
+		return customer;
+	}
+
+	public void setCustomer(Customer customer) {
+		this.customer = customer;
+	}
 
 	public List<Transaction> getTransactionHistory() {
 		return transactionHistory;
@@ -81,6 +84,4 @@ public class Account {
 		this.transactionHistory = transactionHistory;
 	}
 	
-	
-    
 }

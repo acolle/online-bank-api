@@ -5,6 +5,7 @@
  */
 package com.mycompany.onlinebankapi.model;
 
+import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -17,7 +18,7 @@ import javax.persistence.OneToOne;
  * @author anthonycolle
  */
 @MappedSuperclass
-public class Transaction {
+public class Transaction implements Serializable {
 	
 	public static final String
 			DEPOSIT = "DEPOSIT",
@@ -34,62 +35,53 @@ public class Transaction {
     private double amount;
 	@OneToOne
 	private Account account;
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
+	public Date getDateCreated() {
+		return dateCreated;
+	}
+
+	public void setDateCreated(Date dateCreated) {
+		this.dateCreated = dateCreated;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public double getAmount() {
+		return amount;
+	}
+
+	public void setAmount(double amount) {
+		this.amount = amount;
+	}
+
+	public Account getAccount() {
+		return account;
+	}
+
+	public void setAccount(Account account) {
+		this.account = account;
+	}
 	
-    
-    // ADD TRANSACTION AMOUNT
-
-    // Constructors
-    public Transaction() {
-    }
-
-    public Transaction(int id, String type, String description, double amount) {
-        this.id = id;
-        this.type = type;
-        this.description = description;
-        this.amount = amount;
-        this.dateCreated = new Date();
-    }
-
-    // Setters - Mutators
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public void setDate(Date dateCreated) {
-        this.dateCreated = dateCreated;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public void setAmount(double amount) {
-        this.amount = amount;
-    }
-
-    // Getters - Accessors
-    public int getId() {
-        return id;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public Date getDate() {
-        return dateCreated;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public double getAmount() {
-        return amount;
-    }
-    
 }
