@@ -62,13 +62,13 @@ public class UserResource {
             String password = info.getQueryParameters().getFirst("password");
             String passwordConfirm = info.getQueryParameters().getFirst("password2");
 
-//        // Check if all inputs are correct
-//        System.out.println("Firstname: " + firstname);
-//        System.out.println("Lastname: " + lastname);
-//        System.out.println("Address: " + address);
-//        System.out.println("Email: " + email);
-//        System.out.println("Password: " + password);
-//        System.out.println("Password Confirmation: " + passwordConfirm);
+        // Check if all inputs are correct
+        System.out.println("Firstname: " + firstname);
+        System.out.println("Lastname: " + lastname);
+        System.out.println("Address: " + address);
+        System.out.println("Email: " + email);
+        System.out.println("Password: " + password);
+        System.out.println("Password Confirmation: " + passwordConfirm);
 
             if (firstname.isEmpty() || lastname.isEmpty()
                     || address.isEmpty() || email.isEmpty()

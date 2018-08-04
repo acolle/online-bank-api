@@ -11,3 +11,9 @@ function displayLogInForm() {
     document.getElementById("sign-up-form").style.display = "none";
 
 }
+
+function goToProfile() {
+    
+    window.location.href = "profile.html";
+    
+}

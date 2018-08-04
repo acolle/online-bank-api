@@ -25,6 +25,7 @@ public class UserService {
     public void addUser(long id, String firstname, String lastname, String address, String email, String password) {
 
         User newUser = new User(id, firstname, lastname, address, email, password);
+        System.out.println(firstname + " " + lastname + " " + address);
         list.add(newUser);
         System.out.println("New User Added");
     }
