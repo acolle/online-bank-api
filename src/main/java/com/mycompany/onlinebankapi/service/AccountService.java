@@ -8,9 +8,7 @@ package com.mycompany.onlinebankapi.service;
 import com.mycompany.onlinebankapi.model.Account;
 import java.util.List;
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
-import javax.persistence.Persistence;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -22,10 +20,14 @@ import javax.persistence.criteria.Root;
  */
 public class AccountService {
 	
-	private EntityManagerFactory emf = Persistence.createEntityManagerFactory("Account");
-	private EntityManager em = emf.createEntityManager();
-	private EntityTransaction tx = em.getTransaction();
-    
+	private static EntityManager em;
+	private static EntityTransaction tx;
+	
+    public AccountService() {
+		em = MainService.getEntityManager();
+		tx = MainService.getEntityTransaction();
+	}
+	
     public List<Account> retrieveAccounts() {
 		return allEntries();
 	}
