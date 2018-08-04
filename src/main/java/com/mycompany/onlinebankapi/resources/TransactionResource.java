@@ -143,7 +143,8 @@ public class TransactionResource {
     @Path("/{transactionId}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public Transaction getTransaction(@PathParam("transactionId") int id) {
-        return transactionService.getTransaction(id);
+        //return transactionService.getTransaction(id);
+        return null;
     }
 
 }

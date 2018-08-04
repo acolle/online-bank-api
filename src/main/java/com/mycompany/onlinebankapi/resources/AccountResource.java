@@ -12,7 +12,10 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriInfo;
 
 /**
  *
@@ -37,7 +40,7 @@ public class AccountResource {
     @Path("/new")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public Response newAccount(@Context UriInfo info) {
-        
+       return null; 
     }
 
     // Display a specific account (get balance)
@@ -45,7 +48,8 @@ public class AccountResource {
     @Path("/accounts/{accountId}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public Account getAccount(@PathParam("accountId") int id) {
-        return accountService.getAccount(id);
+        //return accountService.getAccount(id);
+        return null;
     }
     
 }

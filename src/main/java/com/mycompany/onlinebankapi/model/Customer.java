@@ -5,6 +5,7 @@
  */
 package com.mycompany.onlinebankapi.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Entity;
@@ -12,6 +13,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -19,77 +21,81 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author anthonycolle
  */
 @Entity
+@Table
 @XmlRootElement
-public class Customer {
-    
+public class Customer implements Serializable {
+
     // Fields - Member Variables
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
     private String firstname;
     private String lastname;
     private String address;
     private String email;
-	private String password;
-	@OneToMany
-	private List<Account> accounts = new ArrayList<>();
+    private String password;
+    
+//@OneToMany
+    
+    //private List<Account> accounts = new ArrayList<>();
 
-	public Customer(){}
-	
-	public int getId() {
-		return id;
-	}
+    public Customer() {
+    }
 
-	public void setId(int id) {
-		this.id = id;
-	}
+    public int getId() {
+        return id;
+    }
 
-	public String getFirstname() {
-		return firstname;
-	}
+    public void setId(int id) {
+        this.id = id;
+    }
 
-	public void setFirstname(String firstname) {
-		this.firstname = firstname;
-	}
+    public String getFirstname() {
+        return firstname;
+    }
 
-	public String getLastname() {
-		return lastname;
-	}
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
+    }
 
-	public void setLastname(String lastname) {
-		this.lastname = lastname;
-	}
+    public String getLastname() {
+        return lastname;
+    }
 
-	public String getAddress() {
-		return address;
-	}
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
+    }
 
-	public void setAddress(String address) {
-		this.address = address;
-	}
+    public String getAddress() {
+        return address;
+    }
 
-	public String getEmail() {
-		return email;
-	}
+    public void setAddress(String address) {
+        this.address = address;
+    }
 
-	public void setEmail(String email) {
-		this.email = email;
-	}
+    public String getEmail() {
+        return email;
+    }
 
-	public String getPassword() {
-		return password;
-	}
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
-	public void setPassword(String password) {
-		this.password = password;
-	}
+    public String getPassword() {
+        return password;
+    }
 
-	public List<Account> getAccounts() {
-		return accounts;
-	}
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
-	public void setAccounts(List<Account> accounts) {
-		this.accounts = accounts;
-	}
-	
+//    public List<Account> getAccounts() {
+//        return accounts;
+//    }
+//
+//    public void setAccounts(List<Account> accounts) {
+//        this.accounts = accounts;
+//    }
+
 }
