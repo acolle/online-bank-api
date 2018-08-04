@@ -31,6 +31,7 @@ public class Account implements Serializable {
 	private String sortCode;
     private String accountNo;
     private double balance;
+	private boolean savingsAccount;
 	@ManyToOne
 	private Customer customer;
 	@ElementCollection
@@ -68,6 +69,14 @@ public class Account implements Serializable {
 
 	public void setBalance(double balance) {
 		this.balance = balance;
+	}
+
+	public boolean isSavingsAccount() {
+		return savingsAccount;
+	}
+
+	public void setSavingsAccount(boolean savingsAccount) {
+		this.savingsAccount = savingsAccount;
 	}
 
 	public Customer getCustomer() {
