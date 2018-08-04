@@ -66,4 +66,16 @@ public class CustomerService {
         }
     }
 
+	public static String hashPass(String password) {
+		//TODO
+		//Will one-way hash the already half-way hashed password user sends
+	}
+	
+	public static String hashId(int id) {
+		
+	}
+	
+	public static int unhashId(String hashedId) {
+		
+	}
 }

@@ -30,6 +30,7 @@ public class Customer {
     private String lastname;
     private String address;
     private String email;
+	private String password;
 	@OneToMany
 	private List<Account> accounts = new ArrayList<>();
 
@@ -73,6 +74,14 @@ public class Customer {
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
 	}
 
 	public List<Account> getAccounts() {
