@@ -19,71 +19,71 @@ import javax.persistence.OneToOne;
  */
 @MappedSuperclass
 public class Transaction implements Serializable {
-	
-	public static final String
-			DEPOSIT = "DEPOSIT",
-			LODGE = "LODGE",
-			WITHDRAW = "WITHDRAW",
-			TRANSFER = "TRANSFER";
-	
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+
+    public static final String DEPOSIT = "DEPOSIT",
+            LODGE = "LODGE",
+            WITHDRAW = "WITHDRAW",
+            TRANSFER = "TRANSFER";
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
     private String type;
     private Date dateCreated;
     private String description;
     private double amount;
-	@OneToOne
-	private Account account;
-	
-	public Transaction(){}
+    @OneToOne
+    private Account account;
 
-	public int getId() {
-		return id;
-	}
+    public Transaction() {
+    }
 
-	public void setId(int id) {
-		this.id = id;
-	}
+    public int getId() {
+        return id;
+    }
 
-	public String getType() {
-		return type;
-	}
+    public void setId(int id) {
+        this.id = id;
+    }
 
-	public void setType(String type) {
-		this.type = type;
-	}
+    public String getType() {
+        return type;
+    }
 
-	public Date getDateCreated() {
-		return dateCreated;
-	}
+    public void setType(String type) {
+        this.type = type;
+    }
 
-	public void setDateCreated(Date dateCreated) {
-		this.dateCreated = dateCreated;
-	}
+    public Date getDateCreated() {
+        return dateCreated;
+    }
 
-	public String getDescription() {
-		return description;
-	}
+    public void setDateCreated(Date dateCreated) {
+        this.dateCreated = dateCreated;
+    }
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+    public String getDescription() {
+        return description;
+    }
 
-	public double getAmount() {
-		return amount;
-	}
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-	public void setAmount(double amount) {
-		this.amount = amount;
-	}
+    public double getAmount() {
+        return amount;
+    }
 
-	public Account getAccount() {
-		return account;
-	}
+    public void setAmount(double amount) {
+        this.amount = amount;
+    }
 
-	public void setAccount(Account account) {
-		this.account = account;
-	}
-	
+    public Account getAccount() {
+        return account;
+    }
+
+    public void setAccount(Account account) {
+        this.account = account;
+    }
+
 }
