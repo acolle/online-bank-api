@@ -8,8 +8,8 @@ package com.mycompany.onlinebankapi.resources;
 import com.mycompany.onlinebankapi.model.Customer;
 import com.mycompany.onlinebankapi.model.LoginCredentials;
 import com.mycompany.onlinebankapi.service.CustomerService;
+import com.mycompany.onlinebankapi.service.Hasher;
 import java.util.List;
-import javax.servlet.ServletException;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.CookieParam;
 import javax.ws.rs.GET;
@@ -40,15 +40,15 @@ public class CustomerResource {
 	@Path("/login")
 	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 	//@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-	public Response login(@CookieParam("account") Cookie cookie, LoginCredentials loginCredentials) {
+	public Response login(@CookieParam("account") Cookie cookie, LoginCredentials loginCredentials) throws Hasher.CannotPerformOperationException {
 		if(cookie != null)
 			return Response.serverError().entity("Already logged in.").build();
 		for(Customer c : userService.allEntries())
 			if(c.getEmail().equals(loginCredentials.getEmail()))
-				if(c.getPassword().equals(CustomerService.hashPass(loginCredentials.getPassword()))) {
+				if(c.getPassword().equals(Hasher.createHash(c.getPassword()))) {
 					//User successfully logged in
 					//Set a cookie in their browser and response accordingly
-					NewCookie nc = new NewCookie("account", CustomerService.hashId(c.getId()));
+					NewCookie nc = new NewCookie("account", Hasher.createHash(Integer.toString(c.getId())));
 					return Response.ok("Successfully logged in.").cookie(nc).build();
 				} else
 					//Incorrect password
