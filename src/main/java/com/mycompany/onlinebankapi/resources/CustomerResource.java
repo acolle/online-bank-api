@@ -64,6 +64,13 @@ public class CustomerResource {
 		}
 	}
 	
+	@POST
+	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+	public Response newCustomer(Customer newCust) {
+		return Response.ok(userService.createCustomer(newCust)).build();
+	}
+	
 
     @POST
     @Path("/login")
