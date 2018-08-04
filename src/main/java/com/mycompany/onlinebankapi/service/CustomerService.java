@@ -22,7 +22,7 @@ import javax.persistence.criteria.Root;
  */
 public class CustomerService {
 
-    private EntityManagerFactory emf = Persistence.createEntityManagerFactory("Customer");
+    private EntityManagerFactory emf = Persistence.createEntityManagerFactory("BankPersistence");
     private EntityManager em = emf.createEntityManager();
     private EntityTransaction tx = em.getTransaction();
 

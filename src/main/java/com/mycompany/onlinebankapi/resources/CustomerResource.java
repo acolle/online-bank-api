@@ -6,6 +6,7 @@
 package com.mycompany.onlinebankapi.resources;
 
 import com.mycompany.onlinebankapi.model.Customer;
+import com.mycompany.onlinebankapi.model.ErrorMessage;
 import com.mycompany.onlinebankapi.model.LoginCredentials;
 import com.mycompany.onlinebankapi.service.CustomerService;
 import com.mycompany.onlinebankapi.service.Hasher;
@@ -22,6 +23,7 @@ import javax.ws.rs.core.Cookie;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.NewCookie;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.UriInfo;
 
 /**
@@ -32,9 +34,36 @@ import javax.ws.rs.core.UriInfo;
 public class CustomerResource {
 
     CustomerService userService = new CustomerService();
+	
+//	private final static String
+//			NO_COOKIE_JSON = "{\"error\":\"Not signed in, cannot retrieve profile.\"}",
+//			NOT_VALID_JSON = "{\"error\":\"Invalid log in details. Cleared invalid cookie.\"}";
 
     public CustomerResource() {
     }
+	
+	@GET
+	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+	public Response getCurrentCustomer(@CookieParam("mainaccount") Cookie accountCookie) {
+		if(accountCookie == null)
+			return Response
+					.status(Status.BAD_REQUEST)
+					.entity(new ErrorMessage("Not signed in, cannot retrieve profile."))
+					.build();
+		try {
+			return Response
+					.ok(userService.retrieveCustomer(Hasher.decryptId(accountCookie.getValue())))
+					.build();
+		} catch(Exception e) {
+			//Error with cookie, remove it
+			return Response
+					.status(Status.BAD_REQUEST)
+					.entity(new ErrorMessage("Invalid log in details. Cleared invalid cookie."))
+					.cookie(new NewCookie(accountCookie, null, 0, false))
+					.build();
+		}
+	}
+	
 
     @POST
     @Path("/login")
@@ -77,7 +106,6 @@ public class CustomerResource {
     @Path("/all")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public List<Customer> getUsers() {
-        System.out.println("\nTEST\n");
         return userService.retrieveCustomers();
     }
 
@@ -143,8 +171,7 @@ public class CustomerResource {
     @Path("/{userId}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public Customer getUser(@PathParam("userId") int id) {
-        //return userService.getUser(id);
-        return null;
+        return userService.retrieveCustomer(id);
     }
 
 }

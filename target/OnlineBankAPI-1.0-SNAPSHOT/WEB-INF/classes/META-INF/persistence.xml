@@ -5,7 +5,7 @@
    xsi:schemaLocation="http://java.sun.com/xml/ns/persistence 
    http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
    
-   <persistence-unit name="Customer" transaction-type="RESOURCE_LOCAL">
+   <persistence-unit name="BankPersistence" transaction-type="RESOURCE_LOCAL">
    
       <class>com.mycompany.onlinebankapi.model.Customer</class>
 <!--      <class>com.mycompany.onlinebankapi.model.Account</class>
@@ -14,9 +14,9 @@
       <class>com.mycompany.onlinebankapi.model.Transfer</class>-->
 
       <properties>
-         <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/test"/>
-         <property name="javax.persistence.jdbc.user" value="root"/>
-         <property name="javax.persistence.jdbc.password" value="password"/>
+         <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/bankapi"/>
+         <property name="javax.persistence.jdbc.user" value="bank"/>
+         <property name="javax.persistence.jdbc.password" value="api"/>
          <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
          <property name="javax.persistence.validation.mode" value="none"/>
          <property name="hibernate.hbm2ddl.auto" value="update"/>

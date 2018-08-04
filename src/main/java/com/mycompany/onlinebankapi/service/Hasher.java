@@ -4,16 +4,67 @@ package com.mycompany.onlinebankapi.service;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.spec.InvalidKeySpecException;
+import javax.crypto.Cipher;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
+import javax.crypto.spec.SecretKeySpec;
 import javax.xml.bind.DatatypeConverter;
 
 /**
  *
- * Source:
+ * Sources:
  *	https://github.com/defuse/password-hashing/blob/master/PasswordStorage.java
+ *	http://www.adeveloperdiary.com/java/how-to-easily-encrypt-and-decrypt-text-in-java/
  */
 public class Hasher {
+
+	private final static byte[] KEY = "#&Df8[n6%z0xVeEi".getBytes();
+	
+	/*
+	Following two methods not working.
+	Will get something together before project is due.
+	For now, just use simple type conversion.
+	*/
+	
+	public static String encryptId(int id) {
+		return Integer.toString(id);
+	}
+	
+	public static int decryptId(String encrypted) {
+		return Integer.parseInt(encrypted);
+	}
+	
+//	public static String encryptId(int id) throws Exception {
+//		String strData = "";
+//
+//		try {
+//			SecretKeySpec skeyspec = new SecretKeySpec(KEY, "Blowfish");
+//			Cipher cipher = Cipher.getInstance("Blowfish");
+//			cipher.init(Cipher.ENCRYPT_MODE, skeyspec);
+//			byte[] encrypted = cipher.doFinal(Integer.toString(id).getBytes());
+//			strData = new String(encrypted);
+//			return strData;
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//			throw new Exception(e);
+//		}
+//	}
+//	
+//	public static int decryptId(String encryptedId) throws Exception {
+//		String strData = "";
+//
+//		try {
+//			SecretKeySpec skeyspec = new SecretKeySpec(KEY, "Blowfish");
+//			Cipher cipher = Cipher.getInstance("Blowfish");
+//			cipher.init(Cipher.DECRYPT_MODE, skeyspec);
+//			byte[] decrypted = cipher.doFinal(encryptedId.getBytes());
+//			strData = new String(decrypted);
+//			return Integer.parseInt(strData);
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//			throw new Exception(e);
+//		}
+//	}
 
 	    @SuppressWarnings("serial")
     static public class InvalidHashException extends Exception {
@@ -203,4 +254,5 @@ public class Hasher {
     {
         return DatatypeConverter.printBase64Binary(array);
 	}
+	
 }

@@ -20,7 +20,8 @@ import javax.persistence.OneToOne;
 @MappedSuperclass
 public class Transaction implements Serializable {
 
-    public static final String DEPOSIT = "DEPOSIT",
+    public static final String
+			DEPOSIT = "DEPOSIT",
             LODGE = "LODGE",
             WITHDRAW = "WITHDRAW",
             TRANSFER = "TRANSFER";
@@ -33,7 +34,10 @@ public class Transaction implements Serializable {
     private String description;
     private double amount;
     @OneToOne
-    private Account account;
+    private Account from;
+	@OneToOne
+	private Account to;
+	
 
     public Transaction() {
     }
@@ -78,12 +82,22 @@ public class Transaction implements Serializable {
         this.amount = amount;
     }
 
-    public Account getAccount() {
-        return account;
-    }
+	public Account getFrom() {
+		return from;
+	}
 
-    public void setAccount(Account account) {
-        this.account = account;
-    }
+	public void setFrom(Account from) {
+		this.from = from;
+	}
+
+	public Account getTo() {
+		return to;
+	}
+
+	public void setTo(Account to) {
+		this.to = to;
+	}
+	
+	
 
 }
