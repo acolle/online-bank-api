@@ -21,50 +21,49 @@ import javax.persistence.criteria.Root;
  * @author anthonycolle
  */
 public class CustomerService {
-    
-	private EntityManagerFactory emf = Persistence.createEntityManagerFactory("Customer");
-	private EntityManager em = emf.createEntityManager();
-	private EntityTransaction tx = em.getTransaction();
-    
-    
+
+    private EntityManagerFactory emf = Persistence.createEntityManagerFactory("Customer");
+    private EntityManager em = emf.createEntityManager();
+    private EntityTransaction tx = em.getTransaction();
+
     public List<Customer> retrieveCustomers() {
-		return allEntries();
-	}
-	
-	public List<Customer> allEntries() {
-		CriteriaBuilder cb = em.getCriteriaBuilder();
-		CriteriaQuery<Customer> cq = cb.createQuery(Customer.class);
-		Root<Customer> rootEntity = cq.from(Customer.class);
-		CriteriaQuery<Customer> all = cq.select(rootEntity);
-		TypedQuery<Customer> allQuery = em.createQuery(all);
-		return allQuery.getResultList();
-	}
-	
-	public Customer retrieveCustomer(int id) {
-		Customer test = em.find(Customer.class, id);
-		em.close();
-		return test;
-	}
-	
-	public Customer createCustomer(Customer b) {
-		Customer test = em.find(Customer.class, b.getId());
-		if(test==null) {
-			tx.begin();
-			em.persist(b);
-			tx.commit();
-			em.close();
-		}
-		return b;
-	}
-	
-	public void deleteCustomer(int id) {
-		Customer test = em.find(Customer.class, id);
-		if(test!=null) {
-			tx.begin();
-			em.remove(test);
-			tx.commit();
-			em.close();
-		}
-	}
-    
+        return allEntries();
+    }
+
+    public List<Customer> allEntries() {
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Customer> cq = cb.createQuery(Customer.class);
+        Root<Customer> rootEntity = cq.from(Customer.class);
+        CriteriaQuery<Customer> all = cq.select(rootEntity);
+        TypedQuery<Customer> allQuery = em.createQuery(all);
+        return allQuery.getResultList();
+    }
+
+    public Customer retrieveCustomer(int id) {
+        Customer test = em.find(Customer.class, id);
+        em.close();
+        return test;
+    }
+
+    public Customer createCustomer(Customer b) {
+        Customer test = em.find(Customer.class, b.getId());
+        if (test == null) {
+            tx.begin();
+            em.persist(b);
+            tx.commit();
+            em.close();
+        }
+        return b;
+    }
+
+    public void deleteCustomer(int id) {
+        Customer test = em.find(Customer.class, id);
+        if (test != null) {
+            tx.begin();
+            em.remove(test);
+            tx.commit();
+            em.close();
+        }
+    }
+
 }

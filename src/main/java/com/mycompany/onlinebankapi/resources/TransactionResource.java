@@ -23,17 +23,43 @@ import javax.ws.rs.core.MediaType;
 public class TransactionResource {
     
     TransactionService transactionService = new TransactionService();
-
+    
+    // Display a list of all transactions
     @GET
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public List<Transaction> getTransactions() {
         return transactionService.retrieveTransactions();
     }
+    
+    // Lodge money
+    @GET
+    @Path("/new/lodge")
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public Response newLodge(@Context UriInfo info) {
 
+    }
+    
+    // Withdraw money
+    @GET
+    @Path("/new/withdraw")
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public Response newWithdraw(@Context UriInfo info) {
+
+    }
+    
+    // Transfer money
+    @GET
+    @Path("/new/transfer")
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public Response newTransfer(@Context UriInfo info) {
+
+    }
+
+    // Display a specific transaction
     @GET
     @Path("/{transactionId}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public Transaction getUser(@PathParam("transactionId") int id) {
+    public Transaction getTransaction(@PathParam("transactionId") int id) {
         return transactionService.getTransaction(id);
     }
     

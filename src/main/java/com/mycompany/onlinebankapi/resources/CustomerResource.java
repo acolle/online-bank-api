@@ -30,14 +30,15 @@ public class CustomerResource {
 	
 	public CustomerResource(){}
     
-//    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-
+    // Display a list of all users (Admin)    
     @GET
+    @Path("/all")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public List<Customer> getUsers() {
         return userService.retrieveCustomers();
     }
     
+    // Create a new user
     @GET
     @Path("/new")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
@@ -85,7 +86,7 @@ public class CustomerResource {
                 return Response.status(200).entity(output).build();
                 
             } else {
-                userService.addUser(1, firstname, lastname, address, email);
+                userService.createCustomer(1, firstname, lastname, address, email);
                 String output = "Welcome " + firstname + "!\nGet started by opening a new account";
                 return Response.status(200).entity(output).build();
             }
@@ -95,6 +96,7 @@ public class CustomerResource {
         }       
     }
 
+    // Display certain details about a specific user
     @GET
     @Path("/{userId}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})

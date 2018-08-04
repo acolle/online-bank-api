@@ -18,18 +18,31 @@ import javax.ws.rs.core.MediaType;
  *
  * @author anthonycolle
  */
+
+@Path("/accounts")
 public class AccountResource {
     
     AccountService accountService = new AccountService();
 
+    // Display a list of all accounts for current user
     @GET
+    @Path("/all")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public List<Account> getAccounts() {
         return accountService.retrieveAccounts();
     }
-
+    
+    // Create a new account
     @GET
-    @Path("/{accountId}")
+    @Path("/new")
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public Response newAccount(@Context UriInfo info) {
+        
+    }
+
+    // Display a specific account (get balance)
+    @GET
+    @Path("/accounts/{accountId}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public Account getAccount(@PathParam("accountId") int id) {
         return accountService.getAccount(id);
