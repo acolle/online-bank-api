@@ -15,7 +15,9 @@ public class Transfer extends Transaction {
 
 	@OneToOne
 	private Account reciever;
-
+	
+	public Transfer(){}
+	
 	public Account getReciever() {
 		return reciever;
 	}

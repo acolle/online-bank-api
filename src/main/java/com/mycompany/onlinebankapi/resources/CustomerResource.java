@@ -27,13 +27,15 @@ import javax.ws.rs.core.UriInfo;
 public class CustomerResource {
     
     CustomerService userService = new CustomerService();
+	
+	public CustomerResource(){}
     
 //    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 
     @GET
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public List<Customer> getUsers() {
-        return userService.getAllUsers();
+        return userService.retrieveCustomers();
     }
     
     @GET

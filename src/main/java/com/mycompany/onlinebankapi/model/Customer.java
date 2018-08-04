@@ -33,6 +33,8 @@ public class Customer {
 	@OneToMany
 	private List<Account> accounts = new ArrayList<>();
 
+	public Customer(){}
+	
 	public int getId() {
 		return id;
 	}

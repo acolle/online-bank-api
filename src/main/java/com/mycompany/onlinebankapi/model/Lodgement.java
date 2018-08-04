@@ -13,6 +13,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class Lodgement extends Transaction {
 	
 	private String creditCard;
+	
+	public Lodgement(){}
 
 	public String getCreditCard() {
 		return creditCard;

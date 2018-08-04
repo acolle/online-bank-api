@@ -35,6 +35,8 @@ public class Transaction implements Serializable {
     private double amount;
 	@OneToOne
 	private Account account;
+	
+	public Transaction(){}
 
 	public int getId() {
 		return id;

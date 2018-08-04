@@ -14,6 +14,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class Withdrawl extends Transaction {
 	
 	private String card;
+	
+	public Withdrawl(){}
 
 	public String getCard() {
 		return card;

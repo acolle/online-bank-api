@@ -36,6 +36,8 @@ public class Account implements Serializable {
 	@ElementCollection
 	private List<Transaction> transactionHistory = new ArrayList<>();
 
+	public Account(){}
+	
 	public int getId() {
 		return id;
 	}

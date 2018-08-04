@@ -6,8 +6,6 @@
 package com.mycompany.onlinebankapi.service;
 
 import com.mycompany.onlinebankapi.model.Account;
-import com.mycompany.onlinebankapi.model.Account;
-import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;

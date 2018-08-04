@@ -25,7 +25,7 @@ public class AccountResource {
     @GET
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public List<Account> getAccounts() {
-        return accountService.getAllAccounts();
+        return accountService.retrieveAccounts();
     }
 
     @GET

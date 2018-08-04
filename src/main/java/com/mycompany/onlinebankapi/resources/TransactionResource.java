@@ -27,7 +27,7 @@ public class TransactionResource {
     @GET
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public List<Transaction> getTransactions() {
-        return transactionService.getAllTransactions();
+        return transactionService.retrieveTransactions();
     }
 
     @GET
