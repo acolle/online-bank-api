@@ -6,8 +6,15 @@
 package com.mycompany.onlinebankapi.service;
 
 import com.mycompany.onlinebankapi.model.Customer;
-import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
+import javax.persistence.Persistence;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 
 /**
  *
@@ -15,41 +22,49 @@ import java.util.List;
  */
 public class CustomerService {
     
-    // Use ArrayList temporarily to mock the Database layer
-    public static List<Customer> list = new ArrayList<Customer>();
+	private EntityManagerFactory emf = Persistence.createEntityManagerFactory("Customer");
+	private EntityManager em = emf.createEntityManager();
+	private EntityTransaction tx = em.getTransaction();
     
     
-    // ADD ADDITIONAL FUNCTIONS
-    
-    // Add a new user
-    public void addUser(int id, String firstname, String lastname, String address, String email) {
-
-        Customer newUser = new Customer(id, firstname, lastname, address, email);
-        System.out.println(firstname + " " + lastname + " " + address);
-        list.add(newUser);
-        System.out.println("New User Added");
-    }
-
-    // Return a list of all users with the service
-    public List<Customer> getAllUsers() {
-        
-//        User u1 = new User(1L, "Bob", "O'Neil", "32, Thomas Street", "boneil@gmail.com", "123456");
-//        User u2 = new User(2L, "Michael", "Connor", "23, Jersey Street", "mconnor@gmail.com", "654321");
-//        User u3 = new User(3L, "Jane", "Birking", "68, Love Street", "janeb@gmail.com", "456123");
-//        User u4 = new User(4L, "Serge", "Ginsburg", "70, Lear Street", "sergeg@gmail.com", "321654");
-//        list.add(u1);
-//        list.add(u2);
-//        list.add(u3);
-//        list.add(u4);
-        
-        return list;
-    }
-
-    // Return a specific user of the service
-    public Customer getUser(int id) {
-        
-        return list.get(id - 1);
-        
-    }
+    public List<Customer> retrieveCustomers() {
+		return allEntries();
+	}
+	
+	public List<Customer> allEntries() {
+		CriteriaBuilder cb = em.getCriteriaBuilder();
+		CriteriaQuery<Customer> cq = cb.createQuery(Customer.class);
+		Root<Customer> rootEntity = cq.from(Customer.class);
+		CriteriaQuery<Customer> all = cq.select(rootEntity);
+		TypedQuery<Customer> allQuery = em.createQuery(all);
+		return allQuery.getResultList();
+	}
+	
+	public Customer retrieveCustomer(int id) {
+		Customer test = em.find(Customer.class, id);
+		em.close();
+		return test;
+	}
+	
+	public Customer createCustomer(Customer b) {
+		Customer test = em.find(Customer.class, b.getId());
+		if(test==null) {
+			tx.begin();
+			em.persist(b);
+			tx.commit();
+			em.close();
+		}
+		return b;
+	}
+	
+	public void deleteCustomer(int id) {
+		Customer test = em.find(Customer.class, id);
+		if(test!=null) {
+			tx.begin();
+			em.remove(test);
+			tx.commit();
+			em.close();
+		}
+	}
     
 }

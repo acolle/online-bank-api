@@ -6,40 +6,67 @@
 package com.mycompany.onlinebankapi.service;
 
 import com.mycompany.onlinebankapi.model.Transaction;
+import com.mycompany.onlinebankapi.model.Transaction;
 import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
+import javax.persistence.Persistence;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 
 /**
  *
  * @author anthonycolle
  */
 public class TransactionService {
+	
+	private EntityManagerFactory emf = Persistence.createEntityManagerFactory("Transaction");
+	private EntityManager em = emf.createEntityManager();
+	private EntityTransaction tx = em.getTransaction();
     
-    // Use ArrayList temporarily to mock the Database layer
-    public static List<Transaction> list = new ArrayList<Transaction>();
-
-    // ADD ADDITIONAL FUNCTIONS
     
-    // Return a list of all transaction to date
-    public List<Transaction> getAllTransactions() {
-        Transaction t1 = new Transaction(1, "debit", "description1", 2341.50);
-        Transaction t2 = new Transaction(2, "debit", "description2", 534.20);
-        Transaction t3 = new Transaction(3, "credit", "description3", 11234.00);
-        Transaction t4 = new Transaction(4, "debit", "description4", 5432.65);
-
-        list.add(t1);
-        list.add(t2);
-        list.add(t3);
-        list.add(t4);
-        return list;
-
-    }
-
-    // Return a specific transaction
-    public Transaction getTransaction(int id) {
-
-        return list.get(id - 1);
-
-    }
+    public List<Transaction> retrieveTransactions() {
+		return allEntries();
+	}
+	
+	public List<Transaction> allEntries() {
+		CriteriaBuilder cb = em.getCriteriaBuilder();
+		CriteriaQuery<Transaction> cq = cb.createQuery(Transaction.class);
+		Root<Transaction> rootEntity = cq.from(Transaction.class);
+		CriteriaQuery<Transaction> all = cq.select(rootEntity);
+		TypedQuery<Transaction> allQuery = em.createQuery(all);
+		return allQuery.getResultList();
+	}
+	
+	public Transaction retrieveTransaction(int id) {
+		Transaction test = em.find(Transaction.class, id);
+		em.close();
+		return test;
+	}
+	
+	public Transaction createTransaction(Transaction b) {
+		Transaction test = em.find(Transaction.class, b.getId());
+		if(test==null) {
+			tx.begin();
+			em.persist(b);
+			tx.commit();
+			em.close();
+		}
+		return b;
+	}
+	
+	public void deleteTransaction(int id) {
+		Transaction test = em.find(Transaction.class, id);
+		if(test!=null) {
+			tx.begin();
+			em.remove(test);
+			tx.commit();
+			em.close();
+		}
+	}
     
 }
