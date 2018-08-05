@@ -1,6 +1,7 @@
 
 package com.mycompany.onlinebankapi.service;
 
+import java.security.Key;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.spec.InvalidKeySpecException;
@@ -15,23 +16,47 @@ import javax.xml.bind.DatatypeConverter;
  * Sources:
  *	https://github.com/defuse/password-hashing/blob/master/PasswordStorage.java
  *	http://www.adeveloperdiary.com/java/how-to-easily-encrypt-and-decrypt-text-in-java/
+ *	https://stackoverflow.com/questions/9098022/problems-converting-byte-array-to-string-and-back-to-byte-array
  */
 public class Hasher {
 
-	private final static byte[] KEY = "#&Df8[n6%z0xVeEi".getBytes();
+	public static final String FAILED_ENC = "ENCRYPTION_FAILED";
+	public static final int FAILED_DEC = -1;
 	
-	/*
-	Following two methods not working.
-	Will get something together before project is due.
-	For now, just use simple type conversion.
-	*/
+	private static final String ENCODING = "ISO-8859-1";
+	private static final String PADDING = "#";
+	private static Key aesKey;
+	private static Cipher cipher;
+	
+	static {
+		aesKey = new SecretKeySpec("#&Df8[n6%z0xVeEi".getBytes(), "AES");
+		try {
+			cipher = Cipher.getInstance("AES");
+		} catch (Exception e) {}
+	}
 	
 	public static String encryptId(int id) {
-		return Integer.toString(id);
+		String text = Integer.toString(id);
+		int toLoop = 16 - (text.length() % 16);
+		for(int i = 0; i < toLoop; i++)
+			text+=PADDING;
+		try {
+			cipher.init(Cipher.ENCRYPT_MODE, aesKey);
+			byte[] encrypted = cipher.doFinal(text.getBytes());
+			return new String(encrypted, ENCODING);
+		} catch (Exception ex) {
+			return text;
+		}
 	}
 	
 	public static int decryptId(String encrypted) {
-		return Integer.parseInt(encrypted);
+		try {
+			cipher.init(Cipher.DECRYPT_MODE, aesKey);
+			String decrypted = new String(cipher.doFinal(encrypted.getBytes(ENCODING))).replaceAll(PADDING, "");
+			return Integer.parseInt(decrypted);
+		} catch (Exception e) {
+			return FAILED_DEC;
+		}
 	}
 	
 //	public static String encryptId(int id) throws Exception {
