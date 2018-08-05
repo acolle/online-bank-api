@@ -22,13 +22,10 @@ import javax.persistence.criteria.Root;
  */
 public class CustomerService {
 
-	private static EntityManager em;
-	private static EntityTransaction tx;
+	private static EntityManager em = MainService.getEntityManager();
+	private static EntityTransaction tx = MainService.getEntityTransaction();
 	
-    public CustomerService() {
-		em = MainService.getEntityManager();
-		tx = MainService.getEntityTransaction();
-	}
+	public CustomerService(){}
 
     public List<Customer> retrieveCustomers() {
         return allEntries();
@@ -43,7 +40,8 @@ public class CustomerService {
         return allQuery.getResultList();
     }
 
-    public Customer retrieveCustomer(int id) {
+	//Changed to static as needed in places where an instance does not exist
+    public static Customer retrieveCustomer(int id) {
         Customer test = em.find(Customer.class, id);
         em.close();
         return test;

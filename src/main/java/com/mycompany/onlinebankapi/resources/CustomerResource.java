@@ -52,7 +52,7 @@ public class CustomerResource {
 					.build();
 		try {
 			return Response
-					.ok(userService.retrieveCustomer(Hasher.decryptId(accountCookie.getValue())))
+					.ok(CustomerService.retrieveCustomer(Hasher.decryptId(accountCookie.getValue())))
 					.build();
 		} catch(Exception e) {
 			//Error with cookie, remove it
@@ -178,7 +178,7 @@ public class CustomerResource {
     @Path("/{userId}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public Customer getUser(@PathParam("userId") int id) {
-        return userService.retrieveCustomer(id);
+        return CustomerService.retrieveCustomer(id);
     }
 
 }

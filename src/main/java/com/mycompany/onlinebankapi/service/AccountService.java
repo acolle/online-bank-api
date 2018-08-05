@@ -20,13 +20,10 @@ import javax.persistence.criteria.Root;
  */
 public class AccountService {
 	
-	private static EntityManager em;
-	private static EntityTransaction tx;
+	private static EntityManager em = MainService.getEntityManager();
+	private static EntityTransaction tx = MainService.getEntityTransaction();
 	
-    public AccountService() {
-		em = MainService.getEntityManager();
-		tx = MainService.getEntityTransaction();
-	}
+    public AccountService() {}
 	
     public List<Account> retrieveAccounts() {
 		return allEntries();

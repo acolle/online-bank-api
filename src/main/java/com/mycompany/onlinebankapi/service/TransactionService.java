@@ -21,23 +21,21 @@ import javax.persistence.criteria.Root;
  */
 public class TransactionService {
 
-	private static EntityManager em;
-	private static EntityTransaction tx;
+	private static EntityManager em = MainService.getEntityManager();
+	private static EntityTransaction tx = MainService.getEntityTransaction();
 	
-    public TransactionService() {
-		em = MainService.getEntityManager();
-		tx = MainService.getEntityTransaction();
-	}
+    public TransactionService() {}
 	
-    public List<Transaction> retrieveTransactions() {
-        return allEntries();
+	//Changed to use an account id so a user cannot see other users account transactions
+    public List<Transaction> retrieveTransactions(int id) {
+        return allEntries(id);
     }
 
-    public List<Transaction> allEntries() {
+    public List<Transaction> allEntries(int id) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Transaction> cq = cb.createQuery(Transaction.class);
         Root<Transaction> rootEntity = cq.from(Transaction.class);
-        CriteriaQuery<Transaction> all = cq.select(rootEntity);
+        CriteriaQuery<Transaction> all = cq.select(rootEntity).where(cb.equal(rootEntity.get("id"), id));
         TypedQuery<Transaction> allQuery = em.createQuery(all);
         return allQuery.getResultList();
     }
