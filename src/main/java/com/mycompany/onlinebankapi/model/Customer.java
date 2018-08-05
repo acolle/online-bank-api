@@ -34,10 +34,8 @@ public class Customer implements Serializable {
     private String address;
     private String email;
     private String password;
-    
-//@OneToMany
-    
-    //private List<Account> accounts = new ArrayList<>();
+	@OneToMany
+    private List<Account> accounts = new ArrayList<>();
 
     public Customer() {
     }

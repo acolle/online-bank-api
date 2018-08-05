@@ -8,11 +8,8 @@
    <persistence-unit name="BankPersistence" transaction-type="RESOURCE_LOCAL">
    
       <class>com.mycompany.onlinebankapi.model.Customer</class>
-<!--      <class>com.mycompany.onlinebankapi.model.Account</class>
-      <class>com.mycompany.onlinebankapi.model.Lodgement</class>
-      <class>com.mycompany.onlinebankapi.model.Withdrawl</class>
-      <class>com.mycompany.onlinebankapi.model.Transfer</class>-->
-
+      <class>com.mycompany.onlinebankapi.model.Account</class>
+      <class>com.mycompany.onlinebankapi.model.Transaction</class>
       <properties>
          <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/bankapi"/>
          <property name="javax.persistence.jdbc.user" value="bank"/>
