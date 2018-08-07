@@ -38,6 +38,13 @@ public class AccountResource {
         //TODO : Get only accounts associated with signed in user
 		return accountService.retrieveAccounts();
     }
+	
+	//Gets all accounts from all users (admin only)
+	@GET
+	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+	public List<Account> getAllAccount(@CookieParam("mainaccount") Cookie cookie) {
+		return null; //TODO
+	}
     
     // Create a new account
     @GET

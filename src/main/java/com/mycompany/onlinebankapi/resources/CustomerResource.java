@@ -64,6 +64,14 @@ public class CustomerResource {
 		}
 	}
 	
+	// Display a list of all users (Admin)    
+    @GET
+    @Path("/all")
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public List<Customer> getUsers() {
+        return userService.retrieveCustomers();
+    }
+	
 	@POST
 	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
@@ -75,7 +83,7 @@ public class CustomerResource {
     @POST
     @Path("/login")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    //@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public Response login(@CookieParam("account") Cookie cookie, LoginCredentials loginCredentials) throws Hasher.CannotPerformOperationException {
         if (cookie != null) {
             return Response.serverError().entity("Already logged in.").build();
@@ -108,15 +116,7 @@ public class CustomerResource {
         return Response.ok("Already logged out.").build();
     }
 
-    // Display a list of all users (Admin)    
-    @GET
-    @Path("/all")
-    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public List<Customer> getUsers() {
-        return userService.retrieveCustomers();
-    }
-
-    // Create a new user
+    // Create a new user via html form
     @GET
     @Path("/new")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
@@ -173,7 +173,7 @@ public class CustomerResource {
         }
     }
 
-    // Display certain details about a specific user
+    // Display certain details about a specific user (admin)
     @GET
     @Path("/{userId}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
