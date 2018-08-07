@@ -36,7 +36,14 @@ public class Customer implements Serializable {
     private String password;
 	@OneToMany
     private List<Account> accounts = new ArrayList<>();
-
+	
+	public boolean hasAccount(int accId) {
+		for(Account a : accounts)
+			if(a.getId() == accId)
+				return true;
+		return false;
+	}
+	
     public Customer() {
     }
 

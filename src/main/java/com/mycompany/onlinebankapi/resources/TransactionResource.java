@@ -33,14 +33,22 @@ public class TransactionResource {
 
     TransactionService transactionService = new TransactionService();
 	
+	//Used for returning error messages
+	private static final int I_VALID_TRANSACTION = 0;
+	private static final int I_NOT_SIGNED_IN = 1;
+	private static final int I_TRANSACTION_NULL = 2;
+	private static final int I_TRANSACTION_AMOUNT_EMPTY = 3;
+	private static final int I_TYPE_DOES_NOT_MATCH = 4;
+	
 	//Commonly used error messages
 	private final static ErrorMessage EM_NOT_SIGNED_IN = new ErrorMessage("Not signed in, cannot create new transaction.");
 	private final static ErrorMessage EM_TRANSACTION_NULL = new ErrorMessage("Must provide transaction details to successfully create transaction through POST.");
 	private final static ErrorMessage EM_IMPROPER_TRANSACTION_TYPE = new ErrorMessage("Cannot complete transaction, improper type specified for current transaction.");
 	private final static ErrorMessage EM_WRONG_CUSTOMER = new ErrorMessage("Customer profile does not match banking account, transaction failed.");
+	private final static ErrorMessage EM_TRANSACTION_EMPTY = new ErrorMessage("Cannot complete transaction with 0 or negative amount.");
+	private final static ErrorMessage EM_INTERNAL_ERROR = new ErrorMessage("Internal server error. Please try again.");
 	
-	
-	// Display a list of all transactions
+	// Display a list of all transactions for the customers account currently signed in
     @GET
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public List<Transaction> getTransactions(@CookieParam("mainaccount") Cookie cookie) {
@@ -53,38 +61,31 @@ public class TransactionResource {
 	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public Response newLodge(@CookieParam("mainaccount") Cookie cookie, Transaction transaction) {
-		if(cookie == null)
-			return Response
-					.status(Response.Status.BAD_REQUEST)
-					.entity(EM_NOT_SIGNED_IN)
-					.build();
-		if(transaction == null)
-			return Response
-					.status(Response.Status.BAD_REQUEST)
-					.entity(EM_TRANSACTION_NULL)
-					.build();
-		if(transaction.getAmount() < 0)
-			return Response
-					.status(Response.Status.BAD_REQUEST)
-					.entity(new ErrorMessage("Transaction failed: cannot lodge negative sums of money to account."))
-					.build();
-		String type = transaction.getType();
-		if(!type.equals(Transaction.LODGE) || !type.equals(Transaction.DEPOSIT))
-			return Response
-					.status(Response.Status.BAD_REQUEST)
-					.entity(EM_IMPROPER_TRANSACTION_TYPE)
-					.build();
-		/*
-		Get the current customer
-		Check if the account 'to' being accessed is the customers
-		Proceed
-		*/
+		
+		switch(validTransaction(cookie, transaction, Transaction.LODGE)) {
+			case I_VALID_TRANSACTION:
+				//All good, no need to return anything, skip the switch
+				break;
+			case I_NOT_SIGNED_IN:
+				return Response.status(Response.Status.BAD_REQUEST).entity(EM_NOT_SIGNED_IN).build();
+			case I_TRANSACTION_NULL:
+				return Response.status(Response.Status.BAD_REQUEST).entity(EM_TRANSACTION_NULL).build();
+			case I_TRANSACTION_AMOUNT_EMPTY:
+				return Response.status(Response.Status.BAD_REQUEST).entity(EM_TRANSACTION_EMPTY).build();
+			case I_TYPE_DOES_NOT_MATCH:
+				return Response.status(Response.Status.BAD_REQUEST).entity(EM_IMPROPER_TRANSACTION_TYPE).build();
+			default:
+				//Should never be reached, but just in case
+				return Response.status(Response.Status.BAD_REQUEST).entity(EM_INTERNAL_ERROR).build();
+		}
+		
+		//If the 'to' account doesn't belong to the current logged in customer, return error
 		Account to = transaction.getTo();
-		if(transaction.getId() != to.getCustomer().getId())
-			return Response
-					.status(Response.Status.BAD_REQUEST)
-					.entity(EM_WRONG_CUSTOMER)
-					.build();
+		int custId = Hasher.decryptId(cookie.getValue());
+		
+		//Check if the customer ID in cookie is same as 'to's customer id
+		if(custId != to.getCustomer().getId())
+			return Response.status(Response.Status.BAD_REQUEST).entity(EM_WRONG_CUSTOMER).build();
 		/*
 		If we get to here, everything's good, complete the transaction.
 		Add it to the account, update account balance
@@ -94,72 +95,75 @@ public class TransactionResource {
 	}
 
     // Withdraw money
-    @GET
+    @POST
     @Path("/new/withdraw")
-    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public Response newWithdraw(@Context UriInfo info) {
+	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public Response newWithdraw(@CookieParam("mainaccount") Cookie cookie, Transaction transaction) {
         
-        try {
-
-            // Get the user inputs when lodging money to one of their account
-            String account = info.getQueryParameters().getFirst("account");
-            String amount = info.getQueryParameters().getFirst("amount");
-
-            // Check if all inputs are correct
-            System.out.println("From account: " + account);
-            System.out.println("Amount Withdrawn: " + amount);
-
-            if (account.isEmpty() || amount.isEmpty()) {
-
-                // HOW TO RETURN THE SPECIFIC FIELD THAT IS MISSING VALUE?
-                String output = "Please fill in all the fields";
-                return Response.status(200).entity(output).build();
-
-            } else {
-                //transactionService.createTransaction();
-                transactionService.withdrawMoney(Integer.parseInt(account), Double.parseDouble(amount));
-                String output = "Successful Withdrawal\n" + amount + " have been withdrawn from " + account;
-                return Response.status(200).entity(output).build();
-            }
-        } catch (NullPointerException e) {
-            String output = "Error with the parameters passed";
-            return Response.status(200).entity(output).build();
-        }
-
+		switch(validTransaction(cookie, transaction, Transaction.WITHDRAW)) {
+			case I_VALID_TRANSACTION:
+				//All good, no need to return anything, skip the switch
+				break;
+			case I_NOT_SIGNED_IN:
+				return Response.status(Response.Status.BAD_REQUEST).entity(EM_NOT_SIGNED_IN).build();
+			case I_TRANSACTION_NULL:
+				return Response.status(Response.Status.BAD_REQUEST).entity(EM_TRANSACTION_NULL).build();
+			case I_TRANSACTION_AMOUNT_EMPTY:
+				return Response.status(Response.Status.BAD_REQUEST).entity(EM_TRANSACTION_EMPTY).build();
+			case I_TYPE_DOES_NOT_MATCH:
+				return Response.status(Response.Status.BAD_REQUEST).entity(EM_IMPROPER_TRANSACTION_TYPE).build();
+			default:
+				//Should never be reached, but just in case
+				return Response.status(Response.Status.BAD_REQUEST).entity(EM_INTERNAL_ERROR).build();
+		}
+		
+		//Check 'from' account if it belongs to current customer
+		Account from = transaction.getFrom();
+		int custId = Hasher.decryptId(cookie.getValue());
+		
+		if(custId != from.getCustomer().getId())
+			return Response.status(Response.Status.BAD_REQUEST).entity(EM_WRONG_CUSTOMER).build();
+		
+		transactionService.withdrawMoney(from.getId(), transaction.getAmount());
+		return Response.ok().entity(transactionService.createTransaction(transaction)).build();
     }
 
     // Transfer money
-    @GET
+    @POST
     @Path("/new/transfer")
+	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public Response newTransfer(@Context UriInfo info) {
-
-        try {
-
-            // Get the user inputs when transfering money to another account
-            String reciever = info.getQueryParameters().getFirst("recipient");
-            String amount = info.getQueryParameters().getFirst("amount");
-
-            // Check if all inputs are correct
-            System.out.println("Recipient: " + reciever);
-            System.out.println("Amount Transfered: " + amount);
-
-            if (reciever.isEmpty() || amount.isEmpty()) {
-
-                // HOW TO RETURN THE SPECIFIC FIELD THAT IS MISSING VALUE?
-                String output = "Please fill in all the fields";
-                return Response.status(200).entity(output).build();
-
-            } else {
-                //transactionService.createTransaction();
-                transactionService.transferMoney(Integer.parseInt(reciever), Double.parseDouble(amount));
-                String output = "Successful Transfer\n" + amount + " have been transfered to " + reciever;
-                return Response.status(200).entity(output).build();
-            }
-        } catch (NullPointerException e) {
-            String output = "Error with the parameters passed";
-            return Response.status(200).entity(output).build();
-        }
+    public Response newTransfer(@CookieParam("mainaccount") Cookie cookie, Transaction transaction) {
+		
+		switch(validTransaction(cookie, transaction, Transaction.TRANSFER)) {
+			case I_VALID_TRANSACTION:
+				//All good, no need to return anything, skip the switch
+				break;
+			case I_NOT_SIGNED_IN:
+				return Response.status(Response.Status.BAD_REQUEST).entity(EM_NOT_SIGNED_IN).build();
+			case I_TRANSACTION_NULL:
+				return Response.status(Response.Status.BAD_REQUEST).entity(EM_TRANSACTION_NULL).build();
+			case I_TRANSACTION_AMOUNT_EMPTY:
+				return Response.status(Response.Status.BAD_REQUEST).entity(EM_TRANSACTION_EMPTY).build();
+			case I_TYPE_DOES_NOT_MATCH:
+				return Response.status(Response.Status.BAD_REQUEST).entity(EM_IMPROPER_TRANSACTION_TYPE).build();
+			default:
+				//Should never be reached, but just in case
+				return Response.status(Response.Status.BAD_REQUEST).entity(EM_INTERNAL_ERROR).build();
+		}
+		
+		//Check 'from' account if it belongs to current customer
+		Account from = transaction.getFrom();
+		int custId = Hasher.decryptId(cookie.getValue());
+		
+		if(custId != from.getCustomer().getId())
+			return Response.status(Response.Status.BAD_REQUEST).entity(EM_WRONG_CUSTOMER).build();
+        
+		//Don't need to check 'to' account
+		
+		transactionService.transferMoney(from.getId(), transaction.getTo().getId(), transaction.getAmount());
+		return Response.ok().entity(transactionService.createTransaction(transaction)).build();
 
     }
 
@@ -167,9 +171,24 @@ public class TransactionResource {
     @GET
     @Path("/{transactionId}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public Transaction getTransaction(@PathParam("transactionId") int id) {
-        //return transactionService.getTransaction(id);
-        return null;
+    public Transaction getTransaction(@CookieParam("mainaccount") Cookie cookie, @PathParam("transactionId") int id) {
+		//Currently just retrieves the overall transaction with id 'id'. Needs to be account specific
+		return transactionService.retrieveTransaction(id);
     }
-
+	
+	
+	
+	private int validTransaction(Cookie c, Transaction t, String type) {
+		if(c == null)
+			return I_NOT_SIGNED_IN;
+		if(t == null)
+			return I_TRANSACTION_NULL;
+		if(t.getAmount() <= 0)
+			return I_TRANSACTION_AMOUNT_EMPTY;
+		if(!t.getType().equalsIgnoreCase(type))
+			return I_TYPE_DOES_NOT_MATCH;
+		
+		return I_VALID_TRANSACTION;
+	}
+	
 }

@@ -69,22 +69,19 @@ public class TransactionService {
     
     public void lodgeMoney(int id, double amount){
         Account recipientAccount = em.find(Account.class, id);
-        double currentBalance = recipientAccount.getBalance();
-        recipientAccount.setBalance(currentBalance + amount);
+		recipientAccount.addToAccount(amount);
         em.close();
     }
     
     public void withdrawMoney(int id, double amount) {
         Account recipientAccount = em.find(Account.class, id);
-        double currentBalance = recipientAccount.getBalance();
-        recipientAccount.setBalance(currentBalance - amount);
+        recipientAccount.takeFromAccount(amount);
         em.close();
     }
     
-    public void transferMoney(int id, double amount){
-        Account recipientAccount = em.find(Account.class, id);
-        double currentBalance = recipientAccount.getBalance();
-        recipientAccount.setBalance(currentBalance + amount);
+    public void transferMoney(int from, int to, double amount){
+        withdrawMoney(from, amount);
+		lodgeMoney(to, amount);
         em.close();
     }
 

@@ -36,7 +36,15 @@ public class Account implements Serializable {
 	private Customer customer;
 	@ElementCollection
 	private List<Transaction> transactionHistory = new ArrayList<>();
-
+	
+	public void addToAccount(double amount) {
+		this.balance+=amount;
+	}
+	
+	public void takeFromAccount(double amount) {
+		this.balance-=amount;
+	}
+	
 	public Account(){}
 	
 	public int getId() {
