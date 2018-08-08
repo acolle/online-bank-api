@@ -41,6 +41,7 @@ public class AccountResource {
 	
 	//Gets all accounts from all users (admin only)
 	@GET
+	@Path("/all")
 	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 	public List<Account> getAllAccount(@CookieParam("mainaccount") Cookie cookie) {
 		return null; //TODO
