@@ -58,7 +58,6 @@ function goToExistingProfile() {
 
 function getNewAccountForm() {
         
-    var responseAPI;
     request = new XMLHttpRequest();
     request.open("GET", "api/accounts/new", false);
     request.send();
