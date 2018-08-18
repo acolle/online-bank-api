@@ -13,7 +13,7 @@ function displayLogInForm() {
 }
 
 function goToProfile() {
-    
+
     window.location.href = "profile.html";
-    
+
 }

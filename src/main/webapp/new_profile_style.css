@@ -67,15 +67,6 @@ hr {
     padding-top: 20px;
 }
 
-/* Text for existing user */
-#existingUser p {
-    text-align: center;
-    color: #fdfdfd;
-    width: 40%;
-    margin: auto;
-    padding: 10px 0;
-}
-
 /* Text for new user */
 #newUser p {
     text-align: center;
@@ -85,16 +76,12 @@ hr {
     padding: 10px 0;
 }
 
-#newUser {
-  display: none;
-}
-
 /* Action Buttons */
-#transfer, #history, #newAccount {
+#newAccount {
   text-align: center;
 }
 
-#transfer input[type=button], #history input[type=button], #newAccount input[type=button] {
+#newAccount input[type=button] {
     width: 300px;
     margin-top: 10px;
     font-size: 16px;
@@ -106,82 +93,13 @@ hr {
     cursor: pointer;
 }
 
-#transfer input[type=button]:hover, #history input[type=button]:hover, #newAccount input[type=button]:hover {
+#newAccount input[type=button]:hover {
     background-color: #efefef;
 }
 
 /* Action Forms */
-/* 1 - Money Transfer */
-#transfer-form {
-    width: 200px;
-    height: 180px;
-    margin: auto;
-    padding: 30px 40px;
-    font-size: 18px;
-    color: #fdfdfd;
-    display: none;
-}
 
-/* 2 - Transaction History */
-#transaction-history {
-  display: none;
-  margin-top: 40px;
-}
-
-#transaction-history-table {
-    border-collapse: collapse;
-    width: 60%;
-    margin: auto;
-}
-
-#transaction-history-table td, #transaction-history-table th {
-    border: 1px solid #ddd;
-    padding: 8px;
-}
-
-#transaction-history-table tr{
-  background-color: #ffffff;
-}
-
-#transaction-history-table tr:nth-child(even){
-  background-color: #f2f2f2;
-}
-
-#transaction-history-table th {
-    padding-top: 12px;
-    padding-bottom: 12px;
-    text-align: left;
-    background-color: #82bbd1;
-    background-image: -webkit-gradient(linear, left top, left bottom, from(#ffcc00), to(#ff9999));
-    color: #3b3b3b;
-}
-
-/* 3 - Add New Account */
-#new-account-form fieldset {
-    border: 1px solid #fdfdfd;
-}
-
-#new-account-form {
-    width: 300px;
-    margin: auto;
-    padding: 30px 40px;
-    font-size: 18px;
-    color: #fdfdfd;
-    display: none;
-}
-
-#new-account-form .field:nth-child(even) {
-  margin-top: 15px;
-}
-
-#new-account-form input[type=text] {
-  width: 150px;
-}
-
-#new-account-form input[type=submit] {
-  text-align: center;
-}
-
+/* 1 - Add New Account */
 #new-account-form-2 fieldset {
     border: 1px solid #fdfdfd;
 }
