@@ -43,7 +43,8 @@ public class Hasher {
 		try {
 			cipher.init(Cipher.ENCRYPT_MODE, aesKey);
 			byte[] encrypted = cipher.doFinal(text.getBytes());
-			return new String(encrypted, ENCODING);
+//			return new String(encrypted, ENCODING);
+			return toBase64(encrypted);
 		} catch (Exception ex) {
 			return text;
 		}
@@ -52,7 +53,8 @@ public class Hasher {
 	public static int decryptId(String encrypted) {
 		try {
 			cipher.init(Cipher.DECRYPT_MODE, aesKey);
-			String decrypted = new String(cipher.doFinal(encrypted.getBytes(ENCODING))).replaceAll(PADDING, "");
+//			String decrypted = new String(cipher.doFinal(encrypted.getBytes(ENCODING))).replaceAll(PADDING, "");
+			String decrypted = new String(cipher.doFinal(fromBase64(encrypted))).replaceAll(PADDING, "");
 			return Integer.parseInt(decrypted);
 		} catch (Exception e) {
 			return FAILED_DEC;

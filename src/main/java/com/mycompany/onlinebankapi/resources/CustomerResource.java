@@ -156,7 +156,10 @@ public class CustomerResource {
 	public Response getUser(@CookieParam("mainaccount") Cookie cookie, @PathParam("userId") int id) {
 		if(cookie == null)
 			return Response.status(Response.Status.BAD_REQUEST).entity(new OutputMessage("Cannot view profile unless signed in.")).build();
-		if(Hasher.decryptId(cookie.getValue()) != id)
+		int uid = Hasher.decryptId(cookie.getValue());
+		if(uid == ADMIN_ACCOUNT)
+			return Response.ok(CustomerService.retrieveCustomer(id)).build();
+		if(uid != id)
 			return Response.status(Response.Status.BAD_REQUEST).entity(new OutputMessage("Cannot view other peoples profiles.")).build();
 		return Response.ok(CustomerService.retrieveCustomer(id)).build();
 	}
