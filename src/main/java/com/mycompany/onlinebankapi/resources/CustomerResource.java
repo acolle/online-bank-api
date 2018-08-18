@@ -77,6 +77,8 @@ public class CustomerResource {
 	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 	public Response newCustomer(Customer newCust) {
+		if(newCust == null)
+			return Response.status(Response.Status.NOT_ACCEPTABLE).entity(new OutputMessage("Must provide details to create new Customer account.")).build();
 		for(Customer c : userService.allEntries())
 			if(c.getEmail().equals(newCust.getEmail()))
 				return Response.status(Response.Status.FORBIDDEN).entity(new OutputMessage("Customer with that email already exists.")).build();
@@ -103,6 +105,8 @@ public class CustomerResource {
         if (cookie != null) {
             return Response.status(Response.Status.BAD_REQUEST).entity(new OutputMessage("Already logged in.")).build();
         }
+		if(loginCredentials == null)
+			return Response.status(Response.Status.NOT_ACCEPTABLE).entity(new OutputMessage("Must provide log in details.")).build();
 		
         for (Customer c : userService.allEntries()) {
             if (c.getEmail().equals(loginCredentials.getEmail())) {

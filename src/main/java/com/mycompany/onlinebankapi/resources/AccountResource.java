@@ -94,6 +94,8 @@ public class AccountResource {
 					.entity(new OutputMessage("Not signed in, cannot create new account."))
 					.cookie(new NewCookie(cookie, null, 0, false))
 					.build();
+		if(account == null)
+			return Response.status(Response.Status.NOT_ACCEPTABLE).entity(new OutputMessage("Must provide account details to create new banking account.")).build();
 		int uid = Hasher.decryptId(cookie.getValue());
 		if(uid <= 0)
 			return Response
