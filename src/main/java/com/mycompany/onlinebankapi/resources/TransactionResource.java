@@ -6,7 +6,7 @@
 package com.mycompany.onlinebankapi.resources;
 
 import com.mycompany.onlinebankapi.model.Account;
-import com.mycompany.onlinebankapi.model.ErrorMessage;
+import com.mycompany.onlinebankapi.model.OutputMessage;
 import com.mycompany.onlinebankapi.model.Transaction;
 import com.mycompany.onlinebankapi.service.Hasher;
 import com.mycompany.onlinebankapi.service.TransactionService;
@@ -18,11 +18,9 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Cookie;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import javax.ws.rs.core.UriInfo;
 
 /**
  *
@@ -41,12 +39,12 @@ public class TransactionResource {
 	private static final int I_TYPE_DOES_NOT_MATCH = 4;
 	
 	//Commonly used error messages
-	private final static ErrorMessage EM_NOT_SIGNED_IN = new ErrorMessage("Not signed in, cannot create new transaction.");
-	private final static ErrorMessage EM_TRANSACTION_NULL = new ErrorMessage("Must provide transaction details to successfully create transaction through POST.");
-	private final static ErrorMessage EM_IMPROPER_TRANSACTION_TYPE = new ErrorMessage("Cannot complete transaction, improper type specified for current transaction.");
-	private final static ErrorMessage EM_WRONG_CUSTOMER = new ErrorMessage("Customer profile does not match banking account, transaction failed.");
-	private final static ErrorMessage EM_TRANSACTION_EMPTY = new ErrorMessage("Cannot complete transaction with 0 or negative amount.");
-	private final static ErrorMessage EM_INTERNAL_ERROR = new ErrorMessage("Internal server error. Please try again.");
+	private final static OutputMessage EM_NOT_SIGNED_IN = new OutputMessage("Not signed in, cannot create new transaction.");
+	private final static OutputMessage EM_TRANSACTION_NULL = new OutputMessage("Must provide transaction details to successfully create transaction through POST.");
+	private final static OutputMessage EM_IMPROPER_TRANSACTION_TYPE = new OutputMessage("Cannot complete transaction, improper type specified for current transaction.");
+	private final static OutputMessage EM_WRONG_CUSTOMER = new OutputMessage("Customer profile does not match banking account, transaction failed.");
+	private final static OutputMessage EM_TRANSACTION_EMPTY = new OutputMessage("Cannot complete transaction with 0 or negative amount.");
+	private final static OutputMessage EM_INTERNAL_ERROR = new OutputMessage("Internal server error. Please try again.");
 	
 	// Display a list of all transactions for the customers account currently signed in
     @GET

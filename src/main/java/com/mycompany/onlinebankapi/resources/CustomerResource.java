@@ -6,8 +6,8 @@
 package com.mycompany.onlinebankapi.resources;
 
 import com.mycompany.onlinebankapi.model.Customer;
-import com.mycompany.onlinebankapi.model.ErrorMessage;
 import com.mycompany.onlinebankapi.model.LoginCredentials;
+import com.mycompany.onlinebankapi.model.OutputMessage;
 import com.mycompany.onlinebankapi.service.CustomerService;
 import com.mycompany.onlinebankapi.service.Hasher;
 import java.util.logging.Level;
@@ -44,7 +44,7 @@ public class CustomerResource {
 		if(cookie == null)
 			return Response
 					.status(Status.BAD_REQUEST)
-					.entity(new ErrorMessage("Not signed in, cannot retrieve profile."))
+					.entity(new OutputMessage("Not signed in, cannot retrieve profile."))
 					.build();
 		try {
 			return Response
@@ -54,7 +54,7 @@ public class CustomerResource {
 			//Error with cookie, remove it
 			return Response
 					.status(Status.BAD_REQUEST)
-					.entity(new ErrorMessage("Invalid log in details, cleared invalid cookie. Please log in again."))
+					.entity(new OutputMessage("Invalid log in details, cleared invalid cookie. Please log in again."))
 					.cookie(new NewCookie(cookie, null, 0, false))
 					.build();
 		}
@@ -68,7 +68,7 @@ public class CustomerResource {
 		if(cookie == null || Hasher.decryptId(cookie.getValue()) != ADMIN_ACCOUNT)
 			return Response
 					.status(Response.Status.BAD_REQUEST)
-					.entity(new ErrorMessage("Cannot view all accounts unless on an admin profile."))
+					.entity(new OutputMessage("Cannot view all accounts unless on an admin profile."))
 					.build();
 		return Response.ok(userService.allEntries()).build();
     }
@@ -79,7 +79,7 @@ public class CustomerResource {
 	public Response newCustomer(Customer newCust) {
 		for(Customer c : userService.allEntries())
 			if(c.getEmail().equals(newCust.getEmail()))
-				return Response.status(Response.Status.FORBIDDEN).entity(new ErrorMessage("Customer with that email already exists.")).build();
+				return Response.status(Response.Status.FORBIDDEN).entity(new OutputMessage("Customer with that email already exists.")).build();
 		try {
 			//Update the password
 			newCust.setPassword(Hasher.createHash(newCust.getPassword()));
@@ -91,7 +91,7 @@ public class CustomerResource {
 		} catch (Hasher.CannotPerformOperationException ex) {
 			Logger.getLogger(CustomerResource.class.getName()).log(Level.SEVERE, null, ex);
 		}
-		return Response.serverError().entity(new ErrorMessage("Problem saving new account. Please try again.")).build();
+		return Response.serverError().entity(new OutputMessage("Problem saving new account. Please try again.")).build();
 	}
 	
 
@@ -101,7 +101,7 @@ public class CustomerResource {
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public Response login(@CookieParam("mainaccount") Cookie cookie, LoginCredentials loginCredentials) throws Hasher.CannotPerformOperationException {
         if (cookie != null) {
-            return Response.status(Response.Status.BAD_REQUEST).entity(new ErrorMessage("Already logged in.")).build();
+            return Response.status(Response.Status.BAD_REQUEST).entity(new OutputMessage("Already logged in.")).build();
         }
 		
         for (Customer c : userService.allEntries()) {
@@ -109,14 +109,14 @@ public class CustomerResource {
 				try {
 					if(Hasher.verifyPassword(loginCredentials.getPassword(), c.getPassword())) {
 						NewCookie nc = new NewCookie("mainaccount", Hasher.encryptId(c.getId()));
-						return Response.ok("Successfully logged in.").cookie(nc).build();
+						return Response.ok(new OutputMessage("Successfully logged in.")).cookie(nc).build();
 					} else break;
 				} catch (Hasher.InvalidHashException ex) {
-					Logger.getLogger(CustomerResource.class.getName()).log(Level.SEVERE, null, ex);
+					return Response.serverError().entity(new OutputMessage("Exception has occurred. Please try again.")).build();
 				}
 			}
 		}
-        return Response.status(Response.Status.BAD_REQUEST).entity(new ErrorMessage("Incorrect email or password.")).build();
+        return Response.status(Response.Status.BAD_REQUEST).entity(new OutputMessage("Incorrect email or password.")).build();
     }
 
     @POST
@@ -124,9 +124,9 @@ public class CustomerResource {
     public Response logout(@CookieParam("account") Cookie cookie) {
         if (cookie != null) {
             NewCookie nc = new NewCookie(cookie, null, 0, false);
-            return Response.ok("Sucessfully logged out.").cookie(nc).build();
+            return Response.ok(new OutputMessage("Sucessfully logged out.")).cookie(nc).build();
         }
-        return Response.ok("Already logged out.").build();
+        return Response.ok(new OutputMessage("Already logged out.")).build();
     }
 
     // Create a new user via html form
@@ -151,9 +151,9 @@ public class CustomerResource {
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 	public Response getUser(@CookieParam("mainaccount") Cookie cookie, @PathParam("userId") int id) {
 		if(cookie == null)
-			return Response.status(Response.Status.BAD_REQUEST).entity(new ErrorMessage("Cannot view profile unless signed in.")).build();
+			return Response.status(Response.Status.BAD_REQUEST).entity(new OutputMessage("Cannot view profile unless signed in.")).build();
 		if(Hasher.decryptId(cookie.getValue()) != id)
-			return Response.status(Response.Status.BAD_REQUEST).entity(new ErrorMessage("Cannot view other peoples profiles.")).build();
+			return Response.status(Response.Status.BAD_REQUEST).entity(new OutputMessage("Cannot view other peoples profiles.")).build();
 		return Response.ok(CustomerService.retrieveCustomer(id)).build();
 	}
 

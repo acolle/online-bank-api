@@ -6,7 +6,7 @@
 package com.mycompany.onlinebankapi.resources;
 
 import com.mycompany.onlinebankapi.model.Account;
-import com.mycompany.onlinebankapi.model.ErrorMessage;
+import com.mycompany.onlinebankapi.model.OutputMessage;
 import com.mycompany.onlinebankapi.service.AccountService;
 import com.mycompany.onlinebankapi.service.CustomerService;
 import com.mycompany.onlinebankapi.service.Hasher;
@@ -44,13 +44,13 @@ public class AccountResource {
 		if(cookie == null)
 			return Response
 					.status(Response.Status.BAD_REQUEST)
-					.entity(new ErrorMessage("Not signed in, cannot get list of accounts."))
+					.entity(new OutputMessage("Not signed in, cannot get list of accounts."))
 					.cookie(new NewCookie(cookie, null, 0, false))
 					.build();
 		if(Hasher.decryptId(cookie.getValue()) <= 0)
 			return Response
 					.status(Response.Status.BAD_REQUEST)
-					.entity(new ErrorMessage("Invalid account cookie removed. Log in and try again."))
+					.entity(new OutputMessage("Invalid account cookie removed. Log in and try again."))
 					.cookie(new NewCookie(cookie, null, 0, false))
 					.build();
 		int uid = Hasher.decryptId(cookie.getValue());
@@ -69,7 +69,7 @@ public class AccountResource {
 		if(cookie == null || Hasher.decryptId(cookie.getValue()) != ADMIN_ACCOUNT)
 			return Response
 					.status(Response.Status.BAD_REQUEST)
-					.entity(new ErrorMessage("Cannot view all accounts unless on an admin profile."))
+					.entity(new OutputMessage("Cannot view all accounts unless on an admin profile."))
 					.cookie(new NewCookie(cookie, null, 0, false))
 					.build();
 		return Response.ok(accountService.allEntries()).build();
@@ -91,14 +91,14 @@ public class AccountResource {
 		if(cookie == null)
 			return Response
 					.status(Response.Status.BAD_REQUEST)
-					.entity(new ErrorMessage("Not signed in, cannot create new account."))
+					.entity(new OutputMessage("Not signed in, cannot create new account."))
 					.cookie(new NewCookie(cookie, null, 0, false))
 					.build();
 		int uid = Hasher.decryptId(cookie.getValue());
 		if(uid <= 0)
 			return Response
 					.status(Response.Status.BAD_REQUEST)
-					.entity(new ErrorMessage("Invalid account cookie removed. Log in and try again."))
+					.entity(new OutputMessage("Invalid account cookie removed. Log in and try again."))
 					.cookie(new NewCookie(cookie, null, 0, false))
 					.build();
 		//Make sure the customer association is set properly for the signed in user
@@ -119,21 +119,21 @@ public class AccountResource {
 		if(cookie == null)
 			return Response
 					.status(Response.Status.BAD_REQUEST)
-					.entity(new ErrorMessage("Not signed in, cannot get account."))
+					.entity(new OutputMessage("Not signed in, cannot get account."))
 					.cookie(new NewCookie(cookie, null, 0, false))
 					.build();
 		int cid = Hasher.decryptId(cookie.getValue());
 		if(cid <= 0)
 			return Response
 					.status(Response.Status.BAD_REQUEST)
-					.entity(new ErrorMessage("Invalid account cookie removed. Log in and try again."))
+					.entity(new OutputMessage("Invalid account cookie removed. Log in and try again."))
 					.cookie(new NewCookie(cookie, null, 0, false))
 					.build();
 		Account a = accountService.retrieveAccount(id);
 		if(a.getCustomer().getId()!=cid)
 			return Response
 					.status(Response.Status.BAD_REQUEST)
-					.entity(new ErrorMessage("Cannot access other users accounts."))
+					.entity(new OutputMessage("Cannot access other users accounts."))
 					.build();
 		return Response.ok(a).build();
 	}
