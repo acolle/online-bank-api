@@ -125,7 +125,7 @@ public class CustomerResource {
 
     @POST
     @Path("/logout")
-    public Response logout(@CookieParam("account") Cookie cookie) {
+    public Response logout(@CookieParam("mainaccount") Cookie cookie) {
         if (cookie != null) {
             NewCookie nc = new NewCookie(cookie, null, 0, false);
             return Response.ok(new OutputMessage("Sucessfully logged out.")).cookie(nc).build();
