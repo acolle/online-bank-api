@@ -11,6 +11,8 @@ import com.mycompany.onlinebankapi.model.LoginCredentials;
 import com.mycompany.onlinebankapi.service.CustomerService;
 import com.mycompany.onlinebankapi.service.Hasher;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.CookieParam;
 import javax.ws.rs.GET;
@@ -35,31 +37,28 @@ public class CustomerResource {
 
     CustomerService userService = new CustomerService();
 	
-//	private final static String
-//			NO_COOKIE_JSON = "{\"error\":\"Not signed in, cannot retrieve profile.\"}",
-//			NOT_VALID_JSON = "{\"error\":\"Invalid log in details. Cleared invalid cookie.\"}";
-
-    public CustomerResource() {
-    }
+	private static final int ADMIN_ACCOUNT = 1;
+	
+    public CustomerResource() {}
 	
 	@GET
 	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-	public Response getCurrentCustomer(@CookieParam("mainaccount") Cookie accountCookie) {
-		if(accountCookie == null)
+	public Response getCurrentCustomer(@CookieParam("mainaccount") Cookie cookie) {
+		if(cookie == null)
 			return Response
 					.status(Status.BAD_REQUEST)
 					.entity(new ErrorMessage("Not signed in, cannot retrieve profile."))
 					.build();
 		try {
 			return Response
-					.ok(CustomerService.retrieveCustomer(Hasher.decryptId(accountCookie.getValue())))
+					.ok(CustomerService.retrieveCustomer(Hasher.decryptId(cookie.getValue())))
 					.build();
 		} catch(Exception e) {
 			//Error with cookie, remove it
 			return Response
 					.status(Status.BAD_REQUEST)
-					.entity(new ErrorMessage("Invalid log in details. Cleared invalid cookie."))
-					.cookie(new NewCookie(accountCookie, null, 0, false))
+					.entity(new ErrorMessage("Invalid log in details, cleared invalid cookie. Please log in again."))
+					.cookie(new NewCookie(cookie, null, 0, false))
 					.build();
 		}
 	}
@@ -68,15 +67,31 @@ public class CustomerResource {
     @GET
     @Path("/all")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public List<Customer> getUsers() {
-        return userService.retrieveCustomers();
+    public Response getUsers(@CookieParam("mainaccount") Cookie cookie) {
+		if(cookie == null || Hasher.decryptId(cookie.getValue()) != ADMIN_ACCOUNT)
+			return Response
+					.status(Response.Status.BAD_REQUEST)
+					.entity(new ErrorMessage("Cannot view all accounts unless on an admin profile."))
+					.build();
+		return Response.ok(userService.allEntries()).build();
     }
 	
 	@POST
 	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 	public Response newCustomer(Customer newCust) {
-		return Response.ok(userService.createCustomer(newCust)).build();
+		try {
+			//Update the password
+			newCust.setPassword(Hasher.createHash(newCust.getPassword()));
+			Customer ret = userService.createCustomer(newCust);
+			return Response
+					.ok(ret)
+					.cookie(new NewCookie("mainaccount", Hasher.encryptId(ret.getId())))
+					.build();
+		} catch (Hasher.CannotPerformOperationException ex) {
+			Logger.getLogger(CustomerResource.class.getName()).log(Level.SEVERE, null, ex);
+		}
+		return Response.serverError().entity(new ErrorMessage("Problem saving new account. Please try again.")).build();
 	}
 	
 
@@ -84,16 +99,16 @@ public class CustomerResource {
     @Path("/login")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public Response login(@CookieParam("account") Cookie cookie, LoginCredentials loginCredentials) throws Hasher.CannotPerformOperationException {
+    public Response login(@CookieParam("mainaccount") Cookie cookie, LoginCredentials loginCredentials) throws Hasher.CannotPerformOperationException {
         if (cookie != null) {
-            return Response.serverError().entity("Already logged in.").build();
+            return Response.status(Response.Status.BAD_REQUEST).entity("Already logged in.").build();
         }
         for (Customer c : userService.allEntries()) {
             if (c.getEmail().equals(loginCredentials.getEmail())) {
                 if (c.getPassword().equals(Hasher.createHash(c.getPassword()))) {
                     //User successfully logged in
                     //Set a cookie in their browser and response accordingly
-                    NewCookie nc = new NewCookie("account", Hasher.createHash(Integer.toString(c.getId())));
+                    NewCookie nc = new NewCookie("mainaccount", Hasher.encryptId(c.getId()));
                     return Response.ok("Successfully logged in.").cookie(nc).build();
                 } else //Incorrect password
                 //Break and return the default message
@@ -103,7 +118,7 @@ public class CustomerResource {
             }
         }
 
-        return Response.serverError().entity("Incorrect email or password.").build();
+        return Response.status(Response.Status.BAD_REQUEST).entity("Incorrect email or password.").build();
     }
 
     @POST
@@ -177,8 +192,12 @@ public class CustomerResource {
     @GET
     @Path("/{userId}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public Customer getUser(@PathParam("userId") int id) {
-        return CustomerService.retrieveCustomer(id);
-    }
+	public Response getUser(@CookieParam("mainaccount") Cookie cookie, @PathParam("userId") int id) {
+		if(cookie == null)
+			return Response.status(Response.Status.BAD_REQUEST).entity(new ErrorMessage("Cannot view profile unless signed in.")).build();
+		if(Hasher.decryptId(cookie.getValue()) != id)
+			return Response.status(Response.Status.BAD_REQUEST).entity(new ErrorMessage("Cannot view other peoples profiles.")).build();
+		return Response.ok(CustomerService.retrieveCustomer(id)).build();
+	}
 
 }
