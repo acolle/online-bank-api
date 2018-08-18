@@ -84,9 +84,11 @@ public class AccountResource {
     // Create a new account object using the parameters passed in the form
     @GET
     @Path("/new")
-    public void newAccountForm() {
+    @Produces(MediaType.TEXT_PLAIN)
+    public Response newAccountForm() {
 
-        System.out.println("New Account Form Successfully Created");
+        // Add some verification if necessary
+        return Response.status(200).entity("true").build();
 
     }
 

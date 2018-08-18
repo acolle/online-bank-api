@@ -57,15 +57,44 @@ function goToExistingProfile() {
 
 
 function getNewAccountForm() {
-        
+    
+    var sourceButtonId = event.target.id;
+    var responseAPI;       
     request = new XMLHttpRequest();
     request.open("GET", "api/accounts/new", false);
     request.send();
     
     if (request.status === 200) {        //File exists
-        displayNewAccount();
+        responseAPI = request.responseText;
+        if (responseAPI === "true") {
+            if (sourceButtonId === "new-account-existing-profile") {
+                displayNewAccount();
+            } else if (sourceButtonId === "new-account-new-profile") {
+                displayNewAccount2();
+            }
+        } else {
+            alert("You are not authorised to create a new account");
+        }
     } else if (request.status === 404) {   //File doesn't exist
         alert("Hey! The file doesn't exist!");
     }
+}
+
+function getNewUserForm() {
     
+    var responseAPI;       
+    request = new XMLHttpRequest();
+    request.open("GET", "api/user/new", false);
+    request.send();
+    
+    if (request.status === 200) {        //File exists
+        responseAPI = request.responseText;
+        if (responseAPI === "true") {
+            displaySignUpForm();
+        } else {
+            alert("You are not authorised to sign up");
+        }
+    } else if (request.status === 404) {   //File doesn't exist
+        alert("Hey! The file doesn't exist!");
+    }
 }

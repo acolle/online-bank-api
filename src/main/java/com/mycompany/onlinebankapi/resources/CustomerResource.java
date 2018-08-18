@@ -133,20 +133,30 @@ public class CustomerResource {
         return Response.ok(new OutputMessage("Already logged out.")).build();
     }
 
-    // Create a new user via html form
+//    // PREVIOUS - EXISTING CUSTOMER CANNOT CREATE NEW PROFILE
+//    @GET
+//    @Path("/new")
+//    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+//    public Response newUser(@CookieParam("mainaccount") Cookie cookie) {
+//		if(cookie != null) {
+//			//User is already signed in. React accordingly
+//			//Tell user to log out first if they want to create a new customer account
+//		}
+//		//User not signed in, show html form for creating a new customer
+//		//and on submit point to POST
+//		
+//		//for now (placeholder)
+//		return Response.serverError().entity("Currently not implemented.").build();
+//    }
+    
     @GET
     @Path("/new")
-    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public Response newUser(@CookieParam("mainaccount") Cookie cookie) {
-		if(cookie != null) {
-			//User is already signed in. React accordingly
-			//Tell user to log out first if they want to create a new customer account
-		}
-		//User not signed in, show html form for creating a new customer
-		//and on submit point to POST
-		
-		//for now (placeholder)
-		return Response.serverError().entity("Currently not implemented.").build();
+    @Produces(MediaType.TEXT_PLAIN)
+    public Response newCustomerForm() {
+        
+        // Add some verification if necessary
+        return Response.status(200).entity("true").build();
+        
     }
 
     // Display certain details about a specific user (admin)
