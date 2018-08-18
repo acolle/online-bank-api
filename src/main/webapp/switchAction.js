@@ -54,3 +54,19 @@ function goToExistingProfile() {
   window.location.href = 'existing_profile.html';
   window.console.log(window.location.href);
 }
+
+
+function getNewAccountForm() {
+        
+    var responseAPI;
+    request = new XMLHttpRequest();
+    request.open("GET", "api/accounts/new", false);
+    request.send();
+    
+    if (request.status === 200) {        //File exists
+        displayNewAccount();
+    } else if (request.status === 404) {   //File doesn't exist
+        alert("Hey! The file doesn't exist!");
+    }
+    
+}

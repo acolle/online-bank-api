@@ -11,7 +11,7 @@
         <div class="container">
 
             <div id="logout">
-              <a href="index.html" >Log out</a>
+                <a href="index.html" >Log out</a>
             </div>
 
             <div id="text-welcome">
@@ -19,90 +19,94 @@
             </div>
 
             <div id="existingUser">
-              <p>Your current balance is</p>
-              <p>CURRENT_BALANCE here</p>
+                <p>Your current balance is</p>
+                <p>CURRENT_BALANCE here</p>
 
-              <p>Please select the actions you'd like to perform</p>
-              <div class="actions">
-              <div id="transfer">
-      				 <input type="button" value="Transfer / Lodging / Withdrawal" onclick="displayTransfer()">
-      				</div>
-              <div id="history">
-      				 <input type="button" value="View Transaction History" onclick="displayTransactionHistory()">
-      				</div>
-              <div id="newAccount">
-      				 <input type="button" value="Add a New Account" onclick="displayNewAccount()">
-      				</div>
-
-              <!-- Form for new transaction -->
-              <div id="transfer-form">
-                <form action="#">
-                  <div class="field">
-                      <label for="type">Transaction Type</label>
-                      <br>
-                      <input type="radio" name="transactionType" value="Transfer" onchange="displayRecipient()" checked> Transfer<br>
-                      <input type="radio" name="transactionType" value="Lodging" onchange="hideRecipient()"> Lodging<br>
-                      <input type="radio" name="transactionType" value="Withdrawal" onchange="hideRecipient()"> Withdrawal<br>
-                  </div>
-                  <div id="recipient-field" class="field">
-                      <label for="recipient">Recipient</label>
-                      <br>
-                      <input type="text" name="transfer" placeholder="Enter the account to send to..">
-                  </div>
-                  <div class="field">
-                      <label for="amount">Amount</label>
-                      <br>
-                      <input type="text" name="amount" placeholder="Enter the amount to send..">
-                  </div>
-                  <input type="submit" value="Send">
-                </form>
-              </div>
-
-              <!-- Check the history of transaction -->
-              <div id="transaction-history">
-                <table id="transaction-history-table">
-                  <tr>
-                    <th>Type</th>
-                    <th>Debit</th>
-                    <th>Credit</th>
-                    <th>Balance</th>
-                  </tr>
-                  <tr>
-                    <td>Transfer accountNo</td>
-                    <td>50</td>
-                    <td></td>
-                    <td>2,300</td>
-                  </tr>
-                  <tr>
-                    <td>Lodging</td>
-                    <td></td>
-                    <td>120</td>
-                    <td>2,350</td>
-                  </tr>
-                </table>
-              </div>
-
-              <!-- Form to create a new account -->
-              <div id="new-account-form">
-                <form action="#">
-                  <fieldset>
-                    <div class="field">
-                      <label for="type">Account Type</label>
-                      <br>
-                      <input type="radio" name="accountType" value="direct" checked> Direct<br>
-                      <input type="radio" name="accountType" value="saving"> Saving<br>
+                <p>Please select the actions you'd like to perform</p>
+                <div class="actions">
+                    <div id="transfer">
+                        <input type="button" value="Transfer / Lodging / Withdrawal" onclick="getNewTransferForm()">
                     </div>
-                    <div class="field">
-                      <label for="amount">Amount</label>
-                      <br>
-                      <input type="text" name="amount" placeholder="Enter the amount to add to your account..">
+                    <div id="history">
+                        <input type="button" value="View Transaction History" onclick="getNewTransactionHistory()">
                     </div>
-                    <input type="submit" value="Create">
-                  </fieldset>
-                </form>
-              </div>
-            </div>
+                    <div id="newAccount">
+                        <input type="button" value="Add a New Account" onclick="getNewUserForm()">
+                    </div>
+
+                    <!-- Form for new transaction -->
+                    <div id="transfer-form">
+                        <form action="#">
+                            <div class="field">
+                                <label for="type">Transaction Type</label>
+                                <br>
+                                <input type="radio" name="transactionType" value="Transfer" onchange="displayRecipient()" checked> Transfer<br>
+                                <input type="radio" name="transactionType" value="Lodging" onchange="hideRecipient()"> Lodging<br>
+                                <input type="radio" name="transactionType" value="Withdrawal" onchange="hideRecipient()"> Withdrawal<br>
+                            </div>
+                            <div id="recipient-field" class="field">
+                                <label for="recipient">Recipient</label>
+                                <br>
+                                <input type="text" name="transfer" placeholder="Enter the account to send to..">
+                            </div>
+                            <div class="field">
+                                <label for="amount">Amount</label>
+                                <br>
+                                <input type="text" name="amount" placeholder="Enter the amount to send..">
+                            </div>
+                            <input type="submit" value="Send">
+                        </form>
+                    </div>
+
+                    <!-- Check the history of transaction -->
+                    <div id="transaction-history">
+                        <table id="transaction-history-table">
+                            <tr>
+                                <th>Type</th>
+                                <th>Debit</th>
+                                <th>Credit</th>
+                                <th>Balance</th>
+                            </tr>
+                            <tr>
+                                <td>Transfer accountNo</td>
+                                <td>50</td>
+                                <td></td>
+                                <td>2,300</td>
+                            </tr>
+                            <tr>
+                                <td>Lodging</td>
+                                <td></td>
+                                <td>120</td>
+                                <td>2,350</td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <!-- Form to create a new account -->
+                    <div id="new-account-form">
+                        <form action="/accounts" method="post">
+                            <fieldset>
+                                <div class="field">
+                                    <label for="type">Account Type</label>
+                                    <br>
+                                    <input type="radio" name="accountType" value="direct" checked> Direct<br>
+                                    <input type="radio" name="accountType" value="saving"> Saving<br>
+                                </div>
+                                <div class="field">
+                                    <label for="amount">Amount</label>
+                                    <br>
+                                    <input type="text" name="amount" placeholder="Enter the amount to add to your account..">
+                                </div>
+                                <input type="submit" value="Create">
+                            </fieldset>
+                        </form>
+                    </div>
+                </div>
             </div>
         </div>
+
+
+        <h2 id="test-new-account">Text to be changed</h2>
+
     </body>
 </html>

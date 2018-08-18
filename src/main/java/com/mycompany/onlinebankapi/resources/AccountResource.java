@@ -19,10 +19,12 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Cookie;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.NewCookie;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriInfo;
 
 /**
  *
@@ -75,13 +77,18 @@ public class AccountResource {
 		return Response.ok(accountService.allEntries()).build();
 	}
     
-    // Create a new account
+    // Create a new account object using the parameters passed in the form
     @GET
     @Path("/new")
-    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+//    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Produces(MediaType.TEXT_PLAIN)
     public Response newAccountForm() {
-		//Return form, submit points to POST /accounts with new account
-		return null; 
+        System.out.println("****\n\n");
+        System.out.println("Reach here");
+        System.out.println("\n\n****");
+                
+        String output = "true";
+	return Response.status(200).entity(output).build();        
     }
 	
 	@POST
