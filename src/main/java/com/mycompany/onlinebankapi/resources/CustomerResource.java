@@ -77,6 +77,9 @@ public class CustomerResource {
 	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 	public Response newCustomer(Customer newCust) {
+		for(Customer c : userService.allEntries())
+			if(c.getEmail().equals(newCust.getEmail()))
+				return Response.status(Response.Status.FORBIDDEN).entity(new ErrorMessage("Customer with that email already exists.")).build();
 		try {
 			//Update the password
 			newCust.setPassword(Hasher.createHash(newCust.getPassword()));
@@ -98,24 +101,22 @@ public class CustomerResource {
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public Response login(@CookieParam("mainaccount") Cookie cookie, LoginCredentials loginCredentials) throws Hasher.CannotPerformOperationException {
         if (cookie != null) {
-            return Response.status(Response.Status.BAD_REQUEST).entity("Already logged in.").build();
+            return Response.status(Response.Status.BAD_REQUEST).entity(new ErrorMessage("Already logged in.")).build();
         }
+		
         for (Customer c : userService.allEntries()) {
             if (c.getEmail().equals(loginCredentials.getEmail())) {
-                if (c.getPassword().equals(Hasher.createHash(c.getPassword()))) {
-                    //User successfully logged in
-                    //Set a cookie in their browser and response accordingly
-                    NewCookie nc = new NewCookie("mainaccount", Hasher.encryptId(c.getId()));
-                    return Response.ok("Successfully logged in.").cookie(nc).build();
-                } else //Incorrect password
-                //Break and return the default message
-                {
-                    break;
-                }
-            }
-        }
-
-        return Response.status(Response.Status.BAD_REQUEST).entity("Incorrect email or password.").build();
+				try {
+					if(Hasher.verifyPassword(loginCredentials.getPassword(), c.getPassword())) {
+						NewCookie nc = new NewCookie("mainaccount", Hasher.encryptId(c.getId()));
+						return Response.ok("Successfully logged in.").cookie(nc).build();
+					} else break;
+				} catch (Hasher.InvalidHashException ex) {
+					Logger.getLogger(CustomerResource.class.getName()).log(Level.SEVERE, null, ex);
+				}
+			}
+		}
+        return Response.status(Response.Status.BAD_REQUEST).entity(new ErrorMessage("Incorrect email or password.")).build();
     }
 
     @POST

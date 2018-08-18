@@ -42,7 +42,7 @@ public class TransactionService {
 
     public Transaction retrieveTransaction(int id) {
         Transaction test = em.find(Transaction.class, id);
-        em.close();
+//        em.close();
         return test;
     }
 
@@ -52,7 +52,7 @@ public class TransactionService {
             tx.begin();
             em.persist(b);
             tx.commit();
-            em.close();
+//            em.close();
         }
         return b;
     }
@@ -63,26 +63,26 @@ public class TransactionService {
             tx.begin();
             em.remove(test);
             tx.commit();
-            em.close();
+//            em.close();
         }
     }
     
     public void lodgeMoney(int id, double amount){
         Account recipientAccount = em.find(Account.class, id);
 		recipientAccount.addToAccount(amount);
-        em.close();
+//        em.close();
     }
     
     public void withdrawMoney(int id, double amount) {
         Account recipientAccount = em.find(Account.class, id);
         recipientAccount.takeFromAccount(amount);
-        em.close();
+//        em.close();
     }
     
     public void transferMoney(int from, int to, double amount){
         withdrawMoney(from, amount);
 		lodgeMoney(to, amount);
-        em.close();
+//        em.close();
     }
 
 }

@@ -15,6 +15,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
+import org.codehaus.jackson.annotate.JsonIgnore;
 
 /**
  *
@@ -33,6 +35,12 @@ public class Customer implements Serializable {
     private String lastname;
     private String address;
     private String email;
+	
+//	Tried using each of these annotations to prevent password and accounts being
+//	sent back to user, neither working as of now.
+//	@XmlTransient
+//	@JsonIgnore
+	
     private String password;
 	@OneToMany
     private List<Account> accounts = new ArrayList<>();

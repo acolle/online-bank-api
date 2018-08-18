@@ -43,7 +43,7 @@ public class CustomerService {
 	//Changed to static as needed in places where an instance does not exist
     public static Customer retrieveCustomer(int id) {
         Customer test = em.find(Customer.class, id);
-        em.close();
+//        em.close();
         return test;
     }
 
@@ -53,7 +53,7 @@ public class CustomerService {
             tx.begin();
             em.persist(b);
             tx.commit();
-            em.close();
+//            em.close();
         }
         return b;
     }
@@ -64,7 +64,7 @@ public class CustomerService {
             tx.begin();
             em.remove(test);
             tx.commit();
-            em.close();
+//            em.close();
         }
     }
 

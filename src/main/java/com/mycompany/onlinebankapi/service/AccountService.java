@@ -40,7 +40,7 @@ public class AccountService {
 	
 	public Account retrieveAccount(int id) {
 		Account test = em.find(Account.class, id);
-		em.close();
+//		em.close();
 		return test;
 	}
 	
@@ -50,7 +50,7 @@ public class AccountService {
 			tx.begin();
 			em.persist(b);
 			tx.commit();
-			em.close();
+//			em.close();
 		}
 		return b;
 	}
@@ -61,7 +61,7 @@ public class AccountService {
 			tx.begin();
 			em.remove(test);
 			tx.commit();
-			em.close();
+//			em.close();
 		}
 	}
     
