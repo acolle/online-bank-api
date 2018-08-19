@@ -28,7 +28,7 @@
                         <input type="button" value="Transfer / Lodging / Withdrawal" onclick="getNewTransferForm()">
                     </div>
                     <div id="history">
-                        <input type="button" value="View Transaction History" onclick="getNewTransactionHistory()">
+                        <input type="button" value="View Transaction History" onclick="displayTransactionHistory()">
                     </div>
                     <div id="newAccount">
                         <input type="button" value="Add a New Account" id="new-account-existing-profile" onclick="getNewUserForm()">
@@ -36,7 +36,7 @@
 
                     <!-- Form for new transaction -->
                     <div id="transfer-form">
-                        <form action="#">
+                        <form action="api/transactions/new/{transactionType}" method="post">
                             <div class="field">
                                 <label for="type">Transaction Type</label>
                                 <br>
@@ -84,7 +84,7 @@
 
                     <!-- Form to create a new account -->
                     <div id="new-account-form">
-                        <form action="/accounts" method="post">
+                        <form action="api/accounts" method="post">
                             <fieldset>
                                 <div class="field">
                                     <label for="type">Account Type</label>
