@@ -1,0 +1,528 @@
+{
+	"info": {
+		"_postman_id": "b7dab399-c3b5-442e-a08f-714a98c058fc",
+		"name": "OnlineBankAPI",
+		"description": "Showcasing endpoints of the API.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "CustomerResource /user GET",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "a7a72570-0d02-4e83-a487-f99f608709f8",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					}
+				],
+				"body": {},
+				"url": {
+					"raw": "localhost:49000/api/user",
+					"host": [
+						"localhost"
+					],
+					"port": "49000",
+					"path": [
+						"api",
+						"user"
+					]
+				},
+				"description": "Retrieves the signed in users profile."
+			},
+			"response": []
+		},
+		{
+			"name": "CustomerResource /user POST",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "9a577c01-7cdf-423e-abe3-a2336a4c2ef7",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"firstname\":\"Fname\",\n\t\"lastname\":\"Lname\",\n\t\"address\":\"321F.Street\",\n\t\"email\":\"1@2.3\",\n\t\"password\":\"billy\"\n}"
+				},
+				"url": {
+					"raw": "localhost:49000/api/user",
+					"host": [
+						"localhost"
+					],
+					"port": "49000",
+					"path": [
+						"api",
+						"user"
+					]
+				},
+				"description": "Method for creating a new customer. Consumes Customer object as either xml or json."
+			},
+			"response": []
+		},
+		{
+			"name": "CustomerResource /user/all GET",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					}
+				],
+				"body": {},
+				"url": {
+					"raw": "localhost:49000/api/user/all",
+					"host": [
+						"localhost"
+					],
+					"port": "49000",
+					"path": [
+						"api",
+						"user",
+						"all"
+					]
+				},
+				"description": "Admin functionality to retrieve list of all accounts."
+			},
+			"response": []
+		},
+		{
+			"name": "CustomerResource /user/login POST",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"email\":\"1@2.3\",\n\t\"password\":\"billy\"\n}"
+				},
+				"url": {
+					"raw": "localhost:49000/api/user/login",
+					"host": [
+						"localhost"
+					],
+					"port": "49000",
+					"path": [
+						"api",
+						"user",
+						"login"
+					]
+				},
+				"description": "Consumes LoginCredentials and logs the user in if the email and password are correct."
+			},
+			"response": []
+		},
+		{
+			"name": "CustomerResource /user/logout POST",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					}
+				],
+				"body": {},
+				"url": {
+					"raw": "localhost:49000/api/user/logout",
+					"host": [
+						"localhost"
+					],
+					"port": "49000",
+					"path": [
+						"api",
+						"user",
+						"logout"
+					]
+				},
+				"description": "Logs the user out."
+			},
+			"response": []
+		},
+		{
+			"name": "CustomerResource /user/new GET",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "text/html"
+					}
+				],
+				"body": {},
+				"url": {
+					"raw": "localhost:49000/api/user/new",
+					"host": [
+						"localhost"
+					],
+					"port": "49000",
+					"path": [
+						"api",
+						"user",
+						"new"
+					]
+				},
+				"description": "Provides a html form for alternate way of creating new Customer."
+			},
+			"response": []
+		},
+		{
+			"name": "CustomerResource /user/{userId} GET",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					}
+				],
+				"body": {},
+				"url": {
+					"raw": "localhost:49000/api/user/6",
+					"host": [
+						"localhost"
+					],
+					"port": "49000",
+					"path": [
+						"api",
+						"user",
+						"6"
+					]
+				},
+				"description": "Retrieves the specific Customer with the associated id. Cannot view other peoples profiles, unless on admin account."
+			},
+			"response": []
+		},
+		{
+			"name": "AccountResource /accounts GET",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					}
+				],
+				"body": {},
+				"url": {
+					"raw": "localhost:49000/api/accounts",
+					"host": [
+						"localhost"
+					],
+					"port": "49000",
+					"path": [
+						"api",
+						"accounts"
+					]
+				},
+				"description": "Retrieves list of accounts associated with currently signed in user."
+			},
+			"response": []
+		},
+		{
+			"name": "AccountResource /accounts POST",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"sortCode\":\"codeedded\",\n\t\"accountNo\":\"blarg\",\n\t\"balance\":99,\n\t\"savingsAccount\":\"true\"\n}"
+				},
+				"url": {
+					"raw": "localhost:49000/api/accounts",
+					"host": [
+						"localhost"
+					],
+					"port": "49000",
+					"path": [
+						"api",
+						"accounts"
+					]
+				},
+				"description": "POST for creating a new banking account."
+			},
+			"response": []
+		},
+		{
+			"name": "AccountResource /accounts/all GET",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					}
+				],
+				"body": {},
+				"url": {
+					"raw": "localhost:49000/api/accounts/all",
+					"host": [
+						"localhost"
+					],
+					"port": "49000",
+					"path": [
+						"api",
+						"accounts",
+						"all"
+					]
+				},
+				"description": "Admin point to access all the accounts."
+			},
+			"response": []
+		},
+		{
+			"name": "AccountResource /accounts/new GET",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "localhost:49000/api/accounts/new",
+					"host": [
+						"localhost"
+					],
+					"port": "49000",
+					"path": [
+						"api",
+						"accounts",
+						"new"
+					]
+				},
+				"description": "Provides a html form for alternate way of creating Accounts."
+			},
+			"response": []
+		},
+		{
+			"name": "AccountResource /accounts/{accountId} GET",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					}
+				],
+				"body": {},
+				"url": {
+					"raw": "localhost:49000/api/accounts/1",
+					"host": [
+						"localhost"
+					],
+					"port": "49000",
+					"path": [
+						"api",
+						"accounts",
+						"1"
+					]
+				},
+				"description": "Retrieves the account with the specified id, only accessible if it belongs to your customer account and you are logged in."
+			},
+			"response": []
+		},
+		{
+			"name": "TransactionResource /transactions GET",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					}
+				],
+				"body": {},
+				"url": {
+					"raw": "localhost:49000/api/transactions",
+					"host": [
+						"localhost"
+					],
+					"port": "49000",
+					"path": [
+						"api",
+						"transactions"
+					]
+				},
+				"description": "Retrieves a list of all transactions associated with your customer account."
+			},
+			"response": []
+		},
+		{
+			"name": "TransactionResource /transactions/{transactionId} GET",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					}
+				],
+				"body": {},
+				"url": {
+					"raw": "localhost:49000/api/transactions/1",
+					"host": [
+						"localhost"
+					],
+					"port": "49000",
+					"path": [
+						"api",
+						"transactions",
+						"1"
+					]
+				},
+				"description": "Gets the associated transaction if it belongs to one of your banking accounts."
+			},
+			"response": []
+		},
+		{
+			"name": "TransactionResource /transactions/new/lodge POST",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"type\":\"LODGE\",\n\t\"description\":\"weekly payment\",\n\t\"amount\":1234,\n\t\"from\":{\"accountNo\":\"CASH\"},\n\t\"to\":{\"customer\":{\"id\":1}}\n}"
+				},
+				"url": {
+					"raw": "localhost:49000/api/transactions/new/lodge",
+					"host": [
+						"localhost"
+					],
+					"port": "49000",
+					"path": [
+						"api",
+						"transactions",
+						"new",
+						"lodge"
+					]
+				},
+				"description": "Creates a new transactions in the database if everything is valid."
+			},
+			"response": []
+		},
+		{
+			"name": "TransactionResource /transactions/new/withdraw POST",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"type\":\"WITHDRAW\",\n\t\"description\":\"for the cats\",\n\t\"amount\":123,\n\t\"from\":{\"customer\":{\"id\":1}},\n\t\"to\":{\"accountNo\":\"CASH\"}\n}"
+				},
+				"url": {
+					"raw": "localhost:49000/api/transactions/new/withdraw",
+					"host": [
+						"localhost"
+					],
+					"port": "49000",
+					"path": [
+						"api",
+						"transactions",
+						"new",
+						"withdraw"
+					]
+				},
+				"description": "Method for withdrawing money from an account."
+			},
+			"response": []
+		},
+		{
+			"name": "TransactionResource /transactions/new/transfer POST",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"type\":\"TRANSFER\",\n\t\"description\":\"for the pizza\",\n\t\"amount\":9999,\n\t\"from\":{\"customer\":{\"id\":1}},\n\t\"to\":{\"customer\":{\"id\":1}}\n}"
+				},
+				"url": {
+					"raw": "localhost:49000/api/transactions/new/transfer",
+					"host": [
+						"localhost"
+					],
+					"port": "49000",
+					"path": [
+						"api",
+						"transactions",
+						"new",
+						"transfer"
+					]
+				},
+				"description": "Used for transferring money between two banking accounts."
+			},
+			"response": []
+		}
+	]
+}
