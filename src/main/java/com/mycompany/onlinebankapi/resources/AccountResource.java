@@ -19,9 +19,7 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Cookie;
-import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.NewCookie;
 import javax.ws.rs.core.Response;
@@ -42,46 +40,37 @@ public class AccountResource {
     // Display a list of all accounts for current user
     @GET
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public Response getAccounts(@CookieParam("mainaccount") Cookie cookie, @Context HttpHeaders headers) {
-		
-		String testing = "{";
-		for(Cookie c : headers.getCookies().values()) {
-			testing+="\""+c.getName()+"\":\""+c.getValue()+"\",";
+    public Response getAccounts(@CookieParam("mainaccount") Cookie cookie ) {		
+        if (cookie == null)
+            return Response
+                    .status(Response.Status.BAD_REQUEST)
+                    .entity(new OutputMessage("Not signed in, cannot get list of accounts."))
+                    .build();
+		int uid;
+		try {
+			uid = Hasher.decryptId(cookie.getValue());
+		} catch(Exception e) {
+			return Response
+                    .status(Response.Status.BAD_REQUEST)
+                    .entity(new OutputMessage("Not signed in, cannot get list of accounts."))
+                    .build();
 		}
-		testing+="}";
 		
-		return Response.ok(testing).build();
-		
-//        if (cookie == null)
-//            return Response
-//                    .status(Response.Status.BAD_REQUEST)
-//                    .entity(new OutputMessage("Not signed in, cannot get list of accounts."))
-//                    .build();
-//		int uid;
-//		try {
-//			uid = Hasher.decryptId(cookie.getValue());
-//		} catch(Exception e) {
-//			return Response
-//                    .status(Response.Status.BAD_REQUEST)
-//                    .entity(new OutputMessage("Not signed in, cannot get list of accounts."))
-//                    .build();
-//		}
-//		
-//		//int uid = Hasher.decryptId(cookie.getValue());
-//        if (uid <= 0) {
-//            return Response
-//                    .status(Response.Status.BAD_REQUEST)
-//                    .entity(new OutputMessage("Invalid account cookie removed. Log in and try again."))
-//                    .cookie(new NewCookie(cookie, null, 0, false))
-//                    .build();
-//        }
-//        List<Account> ret = new ArrayList<>();
-//        for (Account a : accountService.retrieveAccounts()) {
-//            if (a.getCustomer().getId() == uid) {
-//                ret.add(a);
-//            }
-//        }
-//        return Response.ok(ret.toArray(new Account[0])).build();
+		//int uid = Hasher.decryptId(cookie.getValue());
+        if (uid <= 0) {
+            return Response
+                    .status(Response.Status.BAD_REQUEST)
+                    .entity(new OutputMessage("Invalid account cookie removed. Log in and try again."))
+                    .cookie(new NewCookie(cookie, null, 0, false))
+                    .build();
+        }
+        List<Account> ret = new ArrayList<>();
+        for (Account a : accountService.retrieveAccounts()) {
+            if (a.getCustomer().getId() == uid) {
+                ret.add(a);
+            }
+        }
+        return Response.ok(ret.toArray(new Account[0])).build();
     }
 
     //Gets all accounts from all users (admin only)

@@ -118,7 +118,15 @@ public class CustomerResource {
             if (c.getEmail().equals(loginCredentials.getEmail())) {
 				try {
 					if(Hasher.verifyPassword(loginCredentials.getPassword(), c.getPassword())) {
-						NewCookie nc = new NewCookie("mainaccount", Hasher.encryptId(c.getId()));
+						NewCookie nc = new NewCookie(
+								"mainaccount",				//Name of cookie
+								Hasher.encryptId(c.getId()),//Value, the encrypted id
+								"/",						//Path, set to site-wide
+								null,						//Domain, not needed
+								null,						//Comment, not needed
+								3600,						//Time in seconds until cookie expires - 1hr
+								true);						//Can only be sent over secure connection
+//						new NewCookie();
 						return Response.ok(new OutputMessage("Successfully logged in.")).cookie(nc).build();
 					} else break;
 				} catch (Hasher.InvalidHashException ex) {
@@ -179,5 +187,5 @@ public class CustomerResource {
 			return Response.status(Response.Status.BAD_REQUEST).entity(new OutputMessage("Cannot view other peoples profiles.")).build();
 		return Response.ok(CustomerService.retrieveCustomer(id)).build();
 	}
-
+	
 }
