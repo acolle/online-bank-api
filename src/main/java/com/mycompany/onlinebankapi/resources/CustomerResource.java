@@ -125,8 +125,7 @@ public class CustomerResource {
 								null,						//Domain, not needed
 								null,						//Comment, not needed
 								3600,						//Time in seconds until cookie expires - 1hr
-								true);						//Can only be sent over secure connection
-//						new NewCookie();
+								false);						//Can be sent over any connection
 						return Response.ok(new OutputMessage("Successfully logged in.")).cookie(nc).build();
 					} else break;
 				} catch (Hasher.InvalidHashException ex) {
