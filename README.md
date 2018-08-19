@@ -11,4 +11,6 @@ GRANT ALL PRIVILEGES ON bankapi.* TO 'bank'@'localhost
 
 ## Test End Points
 
-The OnlineBankAPI.postman_collection.json file available here is a Postman collection to test all the end points of the API. Please note that some end points won't work on Postman Chrome and need to be tested on the Postman native app.
+The OnlineBankAPI.postman_collection.json file available here is a Postman collection to test all the end points of the API. Please note that some end points won't work on Postman Chrome and need to be tested on the Postman native app which can be downloaded here:
+
+https://www.getpostman.com/apps
