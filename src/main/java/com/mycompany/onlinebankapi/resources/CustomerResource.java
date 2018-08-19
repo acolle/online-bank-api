@@ -10,6 +10,7 @@ import com.mycompany.onlinebankapi.model.LoginCredentials;
 import com.mycompany.onlinebankapi.model.OutputMessage;
 import com.mycompany.onlinebankapi.service.CustomerService;
 import com.mycompany.onlinebankapi.service.Hasher;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ws.rs.Consumes;
@@ -70,7 +71,12 @@ public class CustomerResource {
 					.status(Response.Status.BAD_REQUEST)
 					.entity(new OutputMessage("Cannot view all accounts unless on an admin profile."))
 					.build();
-		return Response.ok(userService.allEntries()).build();
+		
+		//Errors were being formed when trying to convert ArrayList to json so convert to array and dump that.
+		List<Customer> all = userService.allEntries();
+		Customer[] allA = all.toArray(new Customer[0]);
+		
+		return Response.ok(allA).build();
     }
 	
 	@POST

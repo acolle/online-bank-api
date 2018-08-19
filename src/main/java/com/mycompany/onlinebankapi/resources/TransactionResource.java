@@ -46,11 +46,17 @@ public class TransactionResource {
 	private final static OutputMessage EM_TRANSACTION_EMPTY = new OutputMessage("Cannot complete transaction with 0 or negative amount.");
 	private final static OutputMessage EM_INTERNAL_ERROR = new OutputMessage("Internal server error. Please try again.");
 	
+	public TransactionResource(){}
+	
 	// Display a list of all transactions for the customers account currently signed in
     @GET
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public List<Transaction> getTransactions(@CookieParam("mainaccount") Cookie cookie) {
-        return transactionService.retrieveTransactions(Hasher.decryptId(cookie.getValue()));
+    public Response getTransactions(@CookieParam("mainaccount") Cookie cookie) {
+		if(cookie==null)
+			return Response.status(Response.Status.BAD_REQUEST).entity(new OutputMessage("Must be signed in to retrieve transactions.")).build();
+		List<Transaction> allForClient = transactionService.retrieveTransactions(Hasher.decryptId(cookie.getValue()));
+		Transaction[] ret = allForClient.toArray(new Transaction[0]);
+        return Response.ok(ret).build();
     }
 
     // Lodge money
