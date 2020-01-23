@@ -1,5 +1,4 @@
-# Online-Bank-API
-API for an Online Banking System
+# API for an Online Banking System
 
 ## Access Database
 
